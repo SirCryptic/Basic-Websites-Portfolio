@@ -15,6 +15,9 @@ in search.php of this [site here](https://github.com/SirCryptic/Basic-Websites-P
 yes this is not best practice to hardcode apikeys but the first website with tools is just for basics
 */
 ```
+also replace `Your_Domain_Name` in each html file with you domain.
+
+
 ### 2 - [Ip_Logger_WebHook_GUILDED&DISCORD](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD)
 
 replace
