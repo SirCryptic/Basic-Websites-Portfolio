@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="Author" content="scns"/>
+
+  <meta name="copyright" content="scns"/>
+
+  <meta name="description" content="Simple Chatbot using Javascript"/>
+
+  <link href='http://fonts.googleapis.com/css?family=Iceland:400,700' rel='stylesheet' type='text/css'>
+
+  <link href='http://fonts.googleapis.com/css?family=Iceland:400,700' rel='stylesheet' type='text/css'>
+
+  <meta property="og:image" content="">
+  <link rel="icon" href="https://repository-images.githubusercontent.com/523814213/c5ac1ba5-e8e2-44e2-b8fb-b3bac51c05bd" type="image/png">
+  <style>
+    body {
+      background-image: url("https://repository-images.githubusercontent.com/523814213/c5ac1ba5-e8e2-44e2-b8fb-b3bac51c05bd");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    a {
+        color: rgb(238, 241, 7);
+        text-decoration: none;
+      }
+        a:hover {
+        text-decoration: underline;
+       color: rgb(16, 134, 0);
+      }
+        .footer {
+			  text-align: center;
+			  font-size: 12px;
+			  color: #fff;
+			  margin-top: 50px;
+		  }
+		    .footer a {
+			  color: #fff;
+		  }
+		    .footer span {
+			  display: inline-block;
+			  vertical-align: middle;
+			  margin-right: 5px;
+		  }
+
+      .chat-container {
+  max-width: 600px;
+  margin: 50px auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.2);
+}
+
+.chat-header {
+  background-color: #ddd;
+  color: #333;
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.chat-body {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-output {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-message.chat-message-user {
+  background-color: #4b49496c;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 16px;
+  line-height: 1.5;
+  align-self: flex-end;
+}
+
+.chat-message.chat-message-user .speech-bubble {
+  background-color: #4b49496c;
+  color: #fff;
+  border-radius: 5px;
+  display: inline-block;
+  margin-right: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.chat-message.chat-message-user .speech-bubble:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #4b49496c;
+  transform: translateY(-50%);
+}
+
+.chat-message-bot {
+  background-color: #4CAF50;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.chat-message-bot .response {
+  background-color: #4CAF50;
+  border-radius: 5px;
+  padding: 10px;
+  color: #fff;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.chat-message-bot .response:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #4CAF50;
+  transform: translateY(-50%);
+}
+
+.chat-message-bot .speech-bubble {
+  background-color: #4CAF50;
+  color: #fff;
+  border-radius: 5px;
+  display: inline-block;
+  margin-left: 10px;
+  padding: 10px;
+  position: relative;
+}
+.chat-message.chat-message-chatbot {
+  background-color: #4CAF50;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 10px 0;
+  position: relative;
+}
+
+.chat-message-bot .speech-bubble:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #4CAF50;
+  transform: translateY(-50%);
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input form {
+  display: flex;
+  width: 100%;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+    .chat-input button:hover {
+      background-color: #06920a;
+    }
+
+    .edit-button {
+      background-color: #333;
+      border: none;
+      border-radius: 5px;
+      color: #faf9f9;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 5px;
+      padding: 5px;
+    }
+
+    /* Limit the height of the output section and add scrolling */
+    .chat-output {
+      height: 600px;
+      overflow-y: scroll;
+}
+  </style>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-output">
+        <div class="chat-message chat-message-bot">
+          <span class="response">Hello! I'm Chatbot, your personal assistant. I can answer your questions on a wide range of topics, from science and history to technology and current events. You can also ask me to recommend books, TV shows, movies, podcasts, and music based on your preferences. If you're feeling down, I can tell you a joke to brighten your day. Additionally, you can search Wikipedia by typing "wiki" followed by your query.</span>
+        </div>
+      </div>
+      <div class="chat-input">
+        <form>
+          <input type="text" placeholder="Type your message here" required>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <script src="https://unpkg.com/compromise"></script>
+    <script src="script.js"></script>
+    <div class="footer">
+      <span>&copy; 2023 NullSecurityTeam</span>
+      <a href="https://github.com/NULL-Security-Team">GitHub</a>
+  </div>
+</body>
+</html>
