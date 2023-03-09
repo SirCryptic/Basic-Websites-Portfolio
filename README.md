@@ -34,5 +34,11 @@ YOUR_WEBHOOK_URL
 
 - `change it to fit your needs`
 
+### 3 - [Basic Chat Bot JavaScript](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/)
+
+- `change it to fit your needs`
+
+- `update to fit your needs`
+
 # Foot Note/s
 N/A
