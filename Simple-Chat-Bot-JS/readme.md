@@ -25,7 +25,7 @@ Here are some example commands that the chatbot can respond to:
 - Thanks
 - Thank you
 - Who created you?
-- Tell me a joke 1 to 32
+- Tell me a joke
 - Do you like pizza?
 - What is the weather like today?
 - What is the capital of UK?
