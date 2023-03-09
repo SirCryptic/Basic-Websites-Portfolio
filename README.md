@@ -1,7 +1,7 @@
 # Basic-Websites-Portfolio
-Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost](https://www.000webhost.com)
+Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost](https://www.000webhost.com) or Even [GitHub](https://github.com)
 
-## 1 - [Nullsec-Public-Beta-Website-Tools](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools)
+## 1 - [Nullsec-Public-Beta-Website-Tools]([https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools](https://sircryptic.github.io/Basic-Websites-Portfolio/Nullsec-Public-Beta-Website-Tools/index.html)
 
 replace
 
