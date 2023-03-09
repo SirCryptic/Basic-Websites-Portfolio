@@ -1,7 +1,7 @@
 # Basic-Websites-Portfolio
 Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost](https://www.000webhost.com)
 
-### 1 - [Nullsec-Public-Beta-Website-Tools](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools)
+## 1 - [Nullsec-Public-Beta-Website-Tools](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools)
 
 replace
 
@@ -18,7 +18,7 @@ yes this is not best practice to hardcode apikeys but the first website with too
 also replace `Your_Domain_Name` in each html file with you domain.
 
 
-### 2 - [Ip_Logger_WebHook_GUILDED&DISCORD](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD)
+## 2 - [Ip_Logger_WebHook_GUILDED&DISCORD](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD)
 
 replace
 
@@ -30,11 +30,11 @@ in Guilded.php or Discord.php of this [ here](https://github.com/SirCryptic/Basi
 YOUR_WEBHOOK_URL
 
 
-### 3 - [Terminal Style "About Me" Page](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index) 
+## 3 - [Terminal Style "About Me" Page](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index) 
 
 - `change it to fit your needs`
 
-### 3 - [Basic Chat Bot JavaScript](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/)
+## 4 - [Basic Chat Bot JavaScript](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/)
 
 - `change it to fit your needs`
 
