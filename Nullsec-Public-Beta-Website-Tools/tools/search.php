@@ -3,7 +3,7 @@
 if(isset($_GET['cve'])) {
   $cve = $_GET['cve'];
   // replace with your apikey this is a example
-  $apiKey = 'boYedPn8iDWi6GDSO6h2kz72VLt6bZ3S';
+  $apiKey = 'XAbsu1Ruj5uhTNcxGdbGNgrh9WuMS1B6';
   $url = 'https://exploits.shodan.io/api/search?key=' . $apiKey . '&query=' . urlencode($cve);
 
   $response = @file_get_contents($url);
@@ -140,7 +140,7 @@ else if(isset($_GET['ip'])) {
 else if(isset($_GET['q'])) {
     $query = $_GET['q'];
     // replace with your apikey this is a example
-    $apiKey = 'boYedPn8iDWi6GDSO6h2kz72VLt6bZ3S';
+    $apiKey = 'XAbsu1Ruj5uhTNcxGdbGNgrh9WuMS1B6';
     $url = 'https://api.shodan.io/shodan/host/search?key=' . $apiKey . '&query=' . urlencode($query);
   
     $response = file_get_contents($url);
