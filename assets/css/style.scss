@@ -1,5 +1,11 @@
 @import "{{ site.theme }}";
 
+
+.site-header {
+  background-color: #222;
+  color: #fff;
+}
+
 /* Change the font family to a monospace font */
 body {
   font-family: "Fira Code", monospace !important;
