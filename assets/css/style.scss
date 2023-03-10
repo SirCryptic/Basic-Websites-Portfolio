@@ -2,3 +2,38 @@
 ---
 
 @import "{{ site.theme }}";
+
+/* Change the font family to a monospace font */
+body {
+  font-family: "Fira Code", monospace !important;
+}
+
+/* Change the background color of the code blocks */
+.highlight {
+  background-color: #292929;
+}
+
+/* Change the font color of links */
+a {
+  color: #1abc9c;
+}
+
+/* Change the background color of the navbar */
+.site-header {
+  background-color: #000000;
+}
+
+/* Change the color of the navbar links */
+.site-header a {
+  color: #1abc9c;
+}
+
+/* Change the background color of the footer */
+.site-footer {
+  background-color: #292929;
+}
+
+/* Change the color of the footer text */
+.site-footer-text {
+  color: #999999;
+}
