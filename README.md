@@ -41,3 +41,5 @@ Your_Webhook_URL
 # Foot Note/s
 - Please keep in mind that some of the code in these projects may not follow best practices and are intended for educational purposes only. Use at your own risk.
 - All projects in this repository are licensed under the MIT License.
+
+![visitor badge](https://visitor-badge.glitch.me/badge?page_id=sircryptic.Basic-Websites-Portfolio&left_text=My%20Page%20Visitors)
