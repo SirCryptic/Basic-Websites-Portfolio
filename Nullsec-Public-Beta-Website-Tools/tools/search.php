@@ -1,9 +1,11 @@
 <?php
-
+require_once __DIR__ . '/../vendor/autoload.php';
+// Assuming you're in the tools folder
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
+$dotenv->load();
 if(isset($_GET['cve'])) {
   $cve = $_GET['cve'];
-  // replace with your apikey this is a example
-  $apiKey = 'XAbsu1Ruj5uhTNcxGdbGNgrh9WuMS1B6';
+  $apiKey = $_ENV['SHODAN_API_KEY'];
   $url = 'https://exploits.shodan.io/api/search?key=' . $apiKey . '&query=' . urlencode($cve);
 
   $response = @file_get_contents($url);
@@ -32,9 +34,10 @@ if(isset($_GET['cve'])) {
     }
   }
 }
-else if(isset($_GET['domain'])) {
-  $domain = $_GET['domain'];                           // replace with your apikey this is a example
-  $url = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=at_lEBcvYl6zlT00KpBaMHVB6QsMP6mR&outputFormat=JSON&domainName=' . $domain;
+  else if(isset($_GET['domain'])) {
+    $domain = $_GET['domain'];                          
+    $apiKey = $_ENV['WHOISXML_API_KEY'];                         
+    $url = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=' . $apiKey . '&outputFormat=JSON&domainName=' . $domain;
 
   $response = @file_get_contents($url);
   if(!$response){
@@ -50,12 +53,13 @@ else if(isset($_GET['domain'])) {
 }
 else if(isset($_GET['number'])) {
   $number = $_GET['number'];
+  $apiKey = $_ENV['NUMBER_VERIFICATION_API_KEY'];
   $url = 'https://api.apilayer.com/number_verification/validate?number=' . $number;
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);          // replace with your apikey this is a example
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: Q15HL9UKPPO1r5AKbtnjew5a0Gif0vvN'));
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: $apiKey'));
 
   $response = curl_exec($ch);
   curl_close($ch);
@@ -139,8 +143,7 @@ else if(isset($_GET['ip'])) {
 }
 else if(isset($_GET['q'])) {
     $query = $_GET['q'];
-    // replace with your apikey this is a example
-    $apiKey = 'XAbsu1Ruj5uhTNcxGdbGNgrh9WuMS1B6';
+    $apiKey = $_ENV['SHODAN_API_KEY'];
     $url = 'https://api.shodan.io/shodan/host/search?key=' . $apiKey . '&query=' . urlencode($query);
   
     $response = file_get_contents($url);
