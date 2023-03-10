@@ -161,7 +161,7 @@ a:hover {
 				alert('Please enter a Domain Or IP Address.');
 				return;
 			}
-			$.get('../search.php?domain=' + encodeURIComponent(query), function(data) {
+			$.get('search.php?domain=' + encodeURIComponent(query), function(data) {
 				$('#results').html(data);
 			});
 		}
