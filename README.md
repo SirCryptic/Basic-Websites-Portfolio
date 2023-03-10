@@ -6,7 +6,7 @@ Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost]
 [![GitHub forks](https://img.shields.io/github/forks/sircryptic/Basic-Websites-Portfolio.svg)](https://github.com/sircryptic/Basic-Websites-Portfolio>/network)
 
 ## 1 - [Nullsec-Public-Beta-Website-Tools](https://nst-dev.000webhostapp.com/betawebtools/index.html)
-## Installation
+### Installation
 1 Clone the repository to your local machine.
 
 2 Install Composer by following the instructions on getcomposer.org.
