@@ -12,7 +12,7 @@ in search.php of this [site here](https://github.com/SirCryptic/Basic-Websites-P
 
 ```bash
 /*
-yes this is not best practice to hardcode apikeys but the first website with tools is just for basics
+yes this is not best practice to hardcode apikeys but the first website with tools is just for basics and a example
 */
 ```
 
