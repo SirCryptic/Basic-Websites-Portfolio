@@ -7,7 +7,9 @@ This repository contains tools to be used for the Nullsec public beta website. T
 2 Install Composer by following the instructions on getcomposer.org.
 
 3 In the root directory of the cloned repository, run composer install to install the required dependencies.
-
+```
+composer require vlucas/phpdotenv:*
+```
 4 Copy the .env.example file to .env
 
 5 Set up APIkeys and other environment variables in the .env file. Make sure to replace the example values with your own values.
