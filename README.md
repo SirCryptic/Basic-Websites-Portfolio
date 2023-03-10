@@ -6,19 +6,27 @@ Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost]
 [![GitHub forks](https://img.shields.io/github/forks/sircryptic/Basic-Websites-Portfolio.svg)](https://github.com/sircryptic/Basic-Websites-Portfolio>/network)
 
 ## 1 - [Nullsec-Public-Beta-Website-Tools](https://nst-dev.000webhostapp.com/betawebtools/index.html)
+## Installation
+1 Clone the repository to your local machine.
 
-replace
+2 Install Composer by following the instructions on getcomposer.org.
 
-```
-$apiKey = 'Your_API_KEY';
-```
-in search.php of this [site here](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools)  with your api for the corrosponding API
+3 In the root directory of the cloned repository, run composer install to install the required dependencies.
 
-```php
-/*
-yes this is not best practice to hardcode apikeys but the first website with tools is just for basics and a example
-*/
+4 Copy the .env.example file to .env
+
+5 Set up APIkeys and other environment variables in the .env file. Make sure to replace the example values with your own values.
+
+6 Upload all files to your web host.
+
+7 Example .env file:
 ```
+SHODAN_API_KEY=Your_API_KEY
+WHOISXML_API_KEY=Your_API_KEY
+NUMBER_VERIFICATION_API_KEY=Your_API_KEY
+```
+Usage
+After completing the installation steps, the tools should be ready to use on your web host.
 
 ## 2 - [Ip_Logger_WebHook_GUILDED&DISCORD](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD)
 
