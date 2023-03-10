@@ -10,7 +10,7 @@ $apiKey = 'Your_API_KEY';
 ```
 in search.php of this [site here](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools)  with your api for the corrosponding API
 
-```bash
+```php
 /*
 yes this is not best practice to hardcode apikeys but the first website with tools is just for basics and a example
 */
@@ -21,11 +21,11 @@ yes this is not best practice to hardcode apikeys but the first website with too
 replace
 
 ```
-YOUR_WEBHOOK_URL
+Your_Webhook_URL
 ```
 in Guilded.php or Discord.php of this [ here](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD)  with your corrosponding Webhook URL
 
-YOUR_WEBHOOK_URL
+Your_Webhook_URL
 
 
 ## 3 - [Terminal Style "About Me" Page](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index) 
@@ -39,4 +39,5 @@ YOUR_WEBHOOK_URL
 - `update to fit your needs`
 
 # Foot Note/s
-N/A
+- Please keep in mind that some of the code in these projects may not follow best practices and are intended for educational purposes only. Use at your own risk.
+- All projects in this repository are licensed under the MIT License.
