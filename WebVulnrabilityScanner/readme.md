@@ -126,7 +126,7 @@ The scanner uses regular expressions to search for common web application vulner
 </details>
 
 ## How to use
-To use the tool, simply enter the URL or IP address of the target webapplication in the input field and click the "Scan" button. The scanner will then check for vulnerabilities in the target webapplication and display a warning message if any vulnerabilities are found.
+To use the tool, simply enter the URL or IP address of the target webapplication in the input field and click the "Scan" button. The scanner will then check for vulnerabilities in the target webapplication and display a results table indicating what vulnrabilities are found with `not vulnrable` or `vulnrable` if any.
 
 ## Requirements
 The tool requires PHP and cURL to be installed on the server in order to work properly.
