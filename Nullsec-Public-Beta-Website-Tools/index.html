@@ -13,7 +13,7 @@
 
 	<link href='http://fonts.googleapis.com/css?family=Iceland:400,700' rel='stylesheet' type='text/css'>
 
-	<meta property="og:image" content="">
+	<meta property="og:image" content="https://cdn.discordapp.com/attachments/951231551134384168/1081927996509790280/NST-If_we_were_to_remain_silent_we_would_be_guilty_of_complicity_-grey.png">
     <link rel="icon" href="https://cdn.icon-icons.com/icons2/2415/PNG/512/redhat_original_logo_icon_146372.png" type="image/png">
     <title>Home</title>
     <style>
@@ -44,11 +44,31 @@ a:hover {
   color: rgb(16, 134, 0);
 }
         .banner {
+            width: 500px; /* set the width of the box */
+            height: 50px; /* set the height of the box */
+            background-color: #333;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px cyan;
+            padding: 10px;
+            text-align: center;
             font-size: 64px;
             font-weight: bold;
             margin-bottom: 5px;
-            text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 30px cyan, 0 0 40px black, 0 0 50px black, 0 0 60px black, 0 0 70px black, 0 0 80px black, 0 0 90px black, 0 0 100px black;
         }
+        #typing-effect {
+  font-size: 24px;
+  font-family: sans-serif;
+  border-right: 3px solid black;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-right-color: transparent; }
+  50% { border-right-color: black; }
+}
+
         nav ul {
 		list-style: none;
 		margin: 0;
@@ -135,7 +155,7 @@ a:hover {
             text-align: center;
             font-size: 12px;
             color: #fff;
-            margin-top: 50px;
+            margin-top: 150px;
         }
         .footer a {
             color: #fff;
@@ -178,9 +198,26 @@ a:hover {
 </nav>
     <header>
         <img src="https://cdn.discordapp.com/attachments/951231551134384168/1081927996509790280/NST-If_we_were_to_remain_silent_we_would_be_guilty_of_complicity_-grey.png" alt="banner" style="width: 500px; height: 500px;">
-        <h1 class="banner">👨‍💻👋</h1>
+        <div class="banner">
+            <div id="typing-effect"></div>
+          </div>
         <div class="footer">
             <span>&copy; 2023 NullSecurityTeam. All rights reserved. Find us on <a href="https://github.com/NULL-Security-Team">GitHub</a>.</span>
           </div>
-</body>
-</html>
+          <script>
+            const TEXT = "Hello & Weclome To NST Webtools BETA!"; // Text to be typed
+            const SPEED = 100; // Typing speed in milliseconds
+      
+            let index = 0;
+            const typingEffect = setInterval(() => {
+              const element = document.getElementById("typing-effect");
+              if (index >= TEXT.length) {
+                clearInterval(typingEffect);
+                return;
+              }
+              element.textContent += TEXT.charAt(index);
+              index++;
+            }, SPEED);
+          </script>
+        </body>
+      </html>
