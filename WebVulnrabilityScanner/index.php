@@ -10,7 +10,7 @@
 <!-- This tag specifies the copyright owner of the document. -->
 <meta name="copyright" content="scns"/>
 <!-- This tag provides a brief description of the document's content.  -->
-<meta name="description" content="NullSecurityTeam Web Vulnerability Scanner, speed up your your search for that pesky bug!"/>
+<meta name="description" content="NullSecurityTeam Web Vulnerability Scanner, speed up your search for that pesky bug!"/>
 <!-- This tag specifies the URL of an image to be used as a thumbnail when sharing the webpage on social media.  -->
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/67664600?s=200&v=4">
 <!-- This tag specifies the URL of the favicon (short for "favorite icon"), which is the small icon that appears in the browser tab and bookmarks. -->
