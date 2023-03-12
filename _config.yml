@@ -1,3 +1,9 @@
 remote_theme: pages-themes/hacker@v0.2.0
 plugins:
 - jekyll-remote-theme
+
+title: Basic Website Portfolio
+description: My Basic Website portfolio based around numerous things as learning projects
+author:
+  name: SirCryptic
+  url: https://github.com/SirCryptic
