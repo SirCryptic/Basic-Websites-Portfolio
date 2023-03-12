@@ -8,14 +8,17 @@ Simply include the HTML in your website and add your own content. You can modify
 To style the terminal, you can modify the CSS code in the html file.
 
 ### Commands
-- `help`: Show a list of available commands.
-- `clear`: Clear the terminal output.
-- `whoami`: Show information about me.
-- `bio`: Show my bio.
-- `projects`: List my projects.
-- `email`: Show my email address.
-- `twitter`: Show my Twitter handle.
-- `ipnet`: Display your IP address.
+
+| Command | Description |
+| ------- | ----------- |
+| `help` | Show a list of available commands. |
+| `clear` | Clear the terminal output. |
+| `whoami` | Show information about me. |
+| `bio` | Show my bio. |
+| `projects` | List my projects. |
+| `email` | Show my email address. |
+| `twitter` | Show my Twitter handle. |
+| `ipnet` | Display your IP address. |
 
 also a few more but not really relevent
 
