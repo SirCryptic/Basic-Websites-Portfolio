@@ -15,18 +15,18 @@ Hello & Welcome to my Super Basic Websites Portfolio That Can Be Hosted On Almos
   <img src="https://img.shields.io/badge/JavaScript-ES6-yellow.svg" alt="JavaScript ES6">
 </div>
 
-| # | Repository | Demo |
+| Page | Name | Demo | Repository |
+| - | ---- | ---- | ---------- |
+| [[1]](https://sircryptic.github.io/Basic-Websites-Portfolio/Nullsec-Public-Beta-Website-Tools/) | Nullsec-Public-Beta-Website-Tools | [[Demo]](https://nst-dev.000webhostapp.com/betawebtools/) | [Link](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools/Website-Tools) |
+| [[2]](https://sircryptic.github.io/Basic-Websites-Portfolio/WebVulnrabilityScanner/) | Web Vulnrability Scanner | [[Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php) | [Link](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/WebVulnrabilityScanner) |
+| [[3]](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/) | Terminal Style "About Me" Page | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/Terminal%20Style%20About%20Page/) | [Link](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Terminal%20Style%20About%20Page/Terminal%20Style%20About%20Page) |
+| [[4]](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/) | Basic JavaScript Chat Bot | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/ChatBot/index.html) | [Link](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Simple-Chat-Bot-JS) |
+
+
+
+|  | Repository | Misc / Name Description |
 | --- | --- | --- |
-| 1 | [Nullsec-Public-Beta-Website-Tools](https://sircryptic.github.io/Basic-Websites-Portfolio/Nullsec-Public-Beta-Website-Tools/) | [[Demo]](https://nst-dev.000webhostapp.com/betawebtools/) |
-| 2 | [Web Vulnrability Scanner](https://sircryptic.github.io/Basic-Websites-Portfolio/WebVulnrabilityScanner/) | [[Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php) |
-| 3 | [Terminal Style "About Me" Page](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/Terminal%20Style%20About%20Page/) |
-| 4 | [Basic Chat Bot JavaScript](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/ChatBot/index.html) |
-
-
-
-| # | Misc | Description |
-| --- | --- | --- |
-| 1 | [IP Logger](https://sircryptic.github.io/Basic-Websites-Portfolio/Ip_Logger_WebHook_GUILDED%26DISCORD) | IPLogger WebHook GUILDED & DISCORD |
+| [[~]](https://sircryptic.github.io/Basic-Websites-Portfolio/Ip_Logger_WebHook_GUILDED%26DISCORD) | [Link](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD/IPLogger) | IP Logger WebHook GUILDED & DISCORD |
 
 
 
