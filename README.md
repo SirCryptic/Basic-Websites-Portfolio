@@ -32,5 +32,5 @@ Hello & Welcome to my Super Basic Websites Portfolio That Can Be Hosted On Almos
 
 ### Foot Note/s
 - Please keep in mind that some of the code in these projects may not follow best practices and are intended for educational purposes only. Use at your own risk.
-- All projects in this repository are licensed under the MIT License.
+- All projects in this repository are licensed under the [MIT License](https://github.com/SirCryptic/Basic-Websites-Portfolio/blob/main/LICENSE).
 
