@@ -1,4 +1,4 @@
-alternatively you can replace the `index.php` with what ever you like just add this code to your desired webpage
+you can replace the `index.php` with what ever you like just add this code to your desired webpage
 
 ```php
 <?php
