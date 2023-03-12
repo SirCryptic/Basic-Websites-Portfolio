@@ -6,53 +6,6 @@ The scanner uses regular expressions to search for common web application vulner
 
 ## The scanner checks for the following 36 vulnerabilities:
 
-<details>
-  <summary>Click to expand!</summary>
-  
-| # | Vulnerability |
-| - | ------------- |
-| 1 | SQL injection |
-| 2 | Cross-Site Scripting (XSS) |
-| 3 | File Inclusion |
-| 4 | Directory Traversal |
-| 5 | Remote File Inclusion |
-| 6 | Command Injection |
-| 7 | Cross-Site Request Forgery (CSRF) |
-| 8 | Unrestricted File Upload |
-| 9 | Password Cracking |
-| 10 | Session Hijacking |
-| 11 | Broken Authentication and Session Management |
-| 12 | Remote Code Execution |
-| 13 | Local File Inclusion |
-| 14 | Server Side Request Forgery (SSRF) |
-| 15 | XML External Entity (XXE) Injection |
-| 16 | Cross-Site Script Inclusion (XSSI) |
-| 17 | Server-Side Template Injection (SSTI) |
-| 18 | HTML Injection |
-| 19 | LDAP Injection |
-| 20 | XPath Injection |
-| 21 | Code Injection |
-| 22 | Object Injection |
-| 23 | Cross-Domain Scripting |
-| 24 | HTTP Response Splitting |
-| 25 | Buffer Overflow |
-| 26 | Format String Attack |
-| 27 | Command Injection (Windows) |
-| 28 | Insecure Cryptographic Storage |
-| 29 | Insecure Direct Object References |
-| 30 | Insufficient Logging and Monitoring |
-| 31 | Security Misconfiguration |
-| 32 | Cross-Site Script Inclusion (CSSI) |
-| 33 | Click Fraud |
-| 34 | Broken Access Control |
-| 35 | Clickjacking |
-| 36 | Hidden Form Fields |
-
-</details>
-
-<details>
-  <summary>Click to for more info!</summary>
-  
 | Vulnerability             | Description |
 |---------------------------|-------------|
 | SQL Injection             | This occurs when an attacker inserts malicious SQL code into an application's input which is then executed by the database. |
@@ -96,7 +49,6 @@ The scanner uses regular expressions to search for common web application vulner
 | Clickjacking                       | An attack where an attacker tricks a user into clicking on a button or link that is disguised as something else, such as a harmless button, but actually performs a malicious action.                           |
 | Hidden Form Fields                 | This is a type of vulnerability where a form field is hidden from the user, but still included in the form submission. This can allow attackers to submit unexpected data, potentially bypassing form validation or performing other malicious actions. |
 | Object Injection                   | This occurs when an attacker can manipulate serialized objects in a web application to execute arbitrary code.    
-</details>
 
 ## How to use
 To use the tool, simply enter the URL or IP address of the target webapplication in the input field and click the "Scan" button. The scanner will then check for vulnerabilities in the target webapplication and display a results table indicating what vulnrabilities are found with `vulnrable` or `not vulnrable` if any.
