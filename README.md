@@ -1,6 +1,6 @@
 # [Basic-Websites-Portfolio](https://sircryptic.github.io/Basic-Websites-Portfolio/)
 
-Hello & Welcome to my Super Basic Websites Portfolio That Can Be Hosted On Almost Any Platform for Eg: [000webhost](https://www.000webhost.com) or Even [GitHub](https://github.com)
+Greetings and welcome to my portfolio of super basic websites. These websites can be hosted on a variety of platforms, including [000webhost](https://www.000webhost.com) or Even [GitHub](https://github.com)
 
 <div align="left">
   <img src="https://visitor-badge.glitch.me/badge?page_id=sircryptic.Basic-Websites-Portfolio&left_text=My%20Page%20Visitors" alt="visitor badge">
