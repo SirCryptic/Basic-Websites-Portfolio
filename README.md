@@ -26,7 +26,7 @@ Hello & Welcome to my Super Basic Websites Portfolio That Can Be Hosted On Almos
 
 | # | Misc | Description |
 | --- | --- | --- |
-| 1 | [IP Logger](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD) | IPLogger WebHook GUILDED & DISCORD |
+| 1 | [IP Logger](https://sircryptic.github.io/Basic-Websites-Portfolio/Ip_Logger_WebHook_GUILDED%26DISCORD) | IPLogger WebHook GUILDED & DISCORD |
 
 
 
