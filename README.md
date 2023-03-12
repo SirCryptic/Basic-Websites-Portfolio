@@ -7,10 +7,10 @@ Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost]
 
 | # | Repository | Demo |
 | --- | --- | --- |
-| 1 | [Nullsec-Public-Beta-Website-Tools](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools) | [[Demo]](https://nst-dev.000webhostapp.com/betawebtools/) |
-| 2 | [Web Vulnrability Scanner](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/WebVulnrabilityScanner) | [[Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php) |
-| 3 | [Terminal Style "About Me" Page](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Terminal%20Style%20About%20Page) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index) |
-| 4 | [Basic Chat Bot JavaScript](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Simple-Chat-Bot-JS) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/ChatBot/index.html) |
+| 1 | [Nullsec-Public-Beta-Website-Tools](https://sircryptic.github.io/Basic-Websites-Portfolio/Nullsec-Public-Beta-Website-Tools/) | [[Demo]](https://nst-dev.000webhostapp.com/betawebtools/) |
+| 2 | [Web Vulnrability Scanner](https://sircryptic.github.io/Basic-Websites-Portfolio/WebVulnrabilityScanner/) | [[Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php) |
+| 3 | [Terminal Style "About Me" Page](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index) |
+| 4 | [Basic Chat Bot JavaScript](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/ChatBot/index.html) |
 
 
 
