@@ -4,11 +4,11 @@ The Nullsec Public Beta Website Tools is a collection of web-based tools designe
 
 | Tool | Description | API |
 | --- | --- | --- |
-| IoT Search | Using Shodan to search for internet-connected devices | [API HERE](https://www.shodan.io) :x: |
-| Vulnerability Search | Using Shodan to search for information about CVEs | [API HERE](https://www.shodan.io) :x: |
-| IP Lookup | Provides information about the ISP provider of an IP address | NO API KEY NEEDED :white_check_mark: |
-| Whois Lookup | Provides information about a domain name | [API HERE](https://www.whoisxmlapi.com) :x: |
-| Phone Number Lookup | Provides information about a phone number | [API HERE](https://apilayer.com/marketplace/number_verification-api) :x: |
+| IoT Search | Using Shodan to search for internet-connected devices | [API HERE](https://www.shodan.io) ❌ |
+| Vulnerability Search | Using Shodan to search for information about CVEs | [API HERE](https://www.shodan.io) ❌ |
+| IP Lookup | Provides information about the ISP provider of an IP address | NO API KEY NEEDED ✅ |
+| Whois Lookup | Provides information about a domain name | [API HERE](https://www.whoisxmlapi.com) ❌ |
+| Phone Number Lookup | Provides information about a phone number | [API HERE](https://apilayer.com/marketplace/number_verification-api) ❌ |
 
 ### Installation
 
@@ -33,5 +33,5 @@ After completing the installation steps, the tools should be ready to use on you
 - The Phone Number Lookup tool provides information about a phone number, but requires you to enter the local format, e.g., "+44" for the UK.
 - The Vulnerability Search tool uses Shodan to search for information about CVEs. For example, you can search for information about CVEs related to Apache.
 
-
+### Footnote/s
 This project uses environment variables stored in a `.env` file. It's important to note that while this is a common way to store sensitive information like API keys and passwords, it's not a foolproof method of securing them. For more information on how to secure sensitive data in your applications, see [GitHub's Guide to Securing Your Workflows](https://docs.github.com/en/actions/security-guides/encrypted-secrets) & [OWASP's article on .env security](https://owasp.org/www-project-cheat-sheets/cheatsheets/Dotenv_Cheat_Sheet.html).
