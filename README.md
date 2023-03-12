@@ -5,13 +5,13 @@ Super Basic Websites That Can Be Hosted On Almost Any Platform like [000webhost]
 [![GitHub stars](https://img.shields.io/github/stars/sircryptic/Basic-Websites-Portfolio.svg)](https://github.com/sircryptic/Basic-Websites-Portfolio>/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/sircryptic/Basic-Websites-Portfolio.svg)](https://github.com/sircryptic/Basic-Websites-Portfolio>/network)
 
-## 1 - [Nullsec-Public-Beta-Website-Tools](https://nst-dev.000webhostapp.com/betawebtools/index.html)
+## 1 - [Nullsec-Public-Beta-Website-Tools](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Nullsec-Public-Beta-Website-Tools) | [[Demo]](https://nst-dev.000webhostapp.com/betawebtools/)
 
-## 2 - [Web Vulnrability Scanner](https://nst-dev.000webhostapp.com/tools/scanner.php) 
+## 2 - [Web Vulnrability Scanner](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/WebVulnrabilityScanner) | [[Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php)
 
-## 3 - [Terminal Style "About Me" Page](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index) 
+## 3 - [Terminal Style "About Me" Page](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Terminal%20Style%20About%20Page) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Terminal%20Style%20About%20Page/index)
 
-## 4 - [Basic Chat Bot JavaScript](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/index.html)
+## 4 - [Basic Chat Bot JavaScript](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Terminal%20Style%20About%20Page) | [[Demo]](https://sircryptic.github.io/Basic-Websites-Portfolio/Simple-Chat-Bot-JS/ChatBot/index.html)
 
 ### MISC  
 ### [Ip_Logger_WebHook_GUILDED&DISCORD](https://github.com/SirCryptic/Basic-Websites-Portfolio/tree/main/Ip_Logger_WebHook_GUILDED%26DISCORD)
