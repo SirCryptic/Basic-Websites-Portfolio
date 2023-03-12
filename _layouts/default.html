@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
 
-{% seo %}
+    {% seo %}
   </head>
 
   <body>
@@ -36,11 +36,12 @@
         {{ content }}
       </section>
     </div>
+
     <footer>
-  <div class="container">
-    <p>&copy; {{ site.time | date: "%Y" }} SirCryptic. All rights reserved.</p>
-    <p><a href="https://github.com/SirCryptic">GitHub</a></p>
-  </div>
-</footer>
+      <div class="container">
+        <p>© {{ site.time | date: '%Y' }} {{ site.author.name }} - <a href="{{ site.github.author_url }}">GitHub</a></p>
+      </div>
+    </footer>
+
   </body>
 </html>
