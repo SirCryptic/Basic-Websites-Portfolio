@@ -4,15 +4,10 @@ you can replace the `index.php` with what ever you like just add this code to yo
 <?php
 
 include("main/Discord.php");
-
 $sendembed = New Discord();
 
-$sendembed->Visitor();
-
 include("main/Guilded.php");
-
 $sendembed = New Guilded();
-
 
 $sendembed->Visitor();
 
