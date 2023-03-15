@@ -307,11 +307,11 @@ $vulnerabilities = array(
     "Shellshock" => "/(bash( |%20|\\+|%2[Bb])?-c|\$\(printf|echo -ne|wget.*\?cmd=|curl.*\?data=.*bash|User-Agent:.*[\(\)\{\};\'\"\\\`\$][\(\)\{\};\'\"\\\`\$]|shellshock)/i"
     // Shellshock is a security vulnerability in the Unix Bash shell that was discovered in 2014. It allows an attacker to execute arbitrary code on a target system by exploiting a flaw in how Bash evaluates environment variables. The vulnerability affects many versions of Bash on Unix-based operating systems, including Linux and Mac OS X. It can be used to launch a variety of attacks, including remote code execution, privilege escalation, and data theft. The vulnerability has been patched, but it remains a risk for systems that have not been updated.   
     //
-    ///////////////////
-    / LEAVE ME INTACT /
-    ///////////////////
-    /   RJWDLY4EVA    /
-    ///////////////////
+    ////////////////////////
+    //  LEAVE ME INTACT  //
+    //////////////////////
+    //   RJWDLY4EVA    //
+    ////////////////////
     //
     // ADD FROM HERE
     // Feel Free To Add More
