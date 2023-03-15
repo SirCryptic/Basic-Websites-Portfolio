@@ -302,8 +302,19 @@ $vulnerabilities = array(
     // An attack where an attacker is able to gain unauthorized access to resources or actions that should be protected by access controls, allowing them to steal sensitive information or perform malicious actions.
     "Clickjacking" => "/(clickjacking|UI redressing|UI redress attack|user interface redressing|user interface redress attack|UI overlay attack|overlay attack)/i",
     // An attack where an attacker tricks a user into clicking on a button or link that is disguised as something else, such as a harmless button, but actually performs a malicious action, such as initiating a transfer of funds or installing malware.
-    "Hidden Form Fields" => "/<input\s+type\s*=\s*[\"']?\s*hidden\s*[\"']?\s*>/i"
+    "Hidden Form Fields" => "/<input\s+type\s*=\s*[\"']?\s*hidden\s*[\"']?\s*>/i",
     // This is a type of vulnerability where a form field is hidden from the user, but still included in the form submission. This can allow attackers to submit unexpected data, potentially bypassing form validation or performing other malicious actions.
+    "Shellshock" => "/(bash( |%20|\\+|%2[Bb])?-c|\$\(printf|echo -ne|wget.*\?cmd=|curl.*\?data=.*bash|User-Agent:.*[\(\)\{\};\'\"\\\`\$][\(\)\{\};\'\"\\\`\$]|shellshock)/i"
+    // Shellshock is a security vulnerability in the Unix Bash shell that was discovered in 2014. It allows an attacker to execute arbitrary code on a target system by exploiting a flaw in how Bash evaluates environment variables. The vulnerability affects many versions of Bash on Unix-based operating systems, including Linux and Mac OS X. It can be used to launch a variety of attacks, including remote code execution, privilege escalation, and data theft. The vulnerability has been patched, but it remains a risk for systems that have not been updated.   
+    //
+    ///////////////////
+    / LEAVE ME INTACT /
+    ///////////////////
+    /   RJWDLY4EVA    /
+    ///////////////////
+    //
+    // ADD FROM HERE
+    // Feel Free To Add More
 );
         
         // Scan for vulnerabilities
