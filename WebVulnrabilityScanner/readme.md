@@ -1,10 +1,12 @@
-# Web Application Vulnerability Scanner [[Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php)
+# Web Application Vulnerability Scanner 
+[[Web Demo]](https://nst-dev.000webhostapp.com/tools/scanner.php) or [[Bash Version]](https://github.com/sircryptic/cwv-scanner)
+
 This is a simple web application vulnerability scanner that checks if a given URL or IP address is vulnerable to common web application security vulnerabilities. The tool is designed to help website owners and security researchers identify vulnerabilities in their web applications that can be exploited by attackers.
 
 ## How it works
 The scanner uses regular expressions to search for common web application vulnerabilities in the HTML code of the target website. If a vulnerability is found, the tool displays a table of results indicating if it is vulnerable and to which vunlrabilties.
 
-## The scanner checks for the following 36 vulnerabilities:
+## The scanner checks for the following 37 vulnerabilities:
 
 | Vulnerability             | Description |
 |---------------------------|-------------|
@@ -56,3 +58,5 @@ To use the tool, simply enter the URL or IP address of the target webapplication
 
 ## Requirements
 The tool requires PHP and cURL to be installed on the server in order to work properly.
+
+## [Bash Version](https://github.com/sircryptic/cwv-scanner)
