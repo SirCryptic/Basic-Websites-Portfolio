@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Terminus Quest Checklist</title>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+      <link rel="icon" href="../images/logo.png" type="image/png">
+      <link rel="stylesheet" href="../css/terminus.css">
+   </head>
+   <body>
+      <header class="header">
+         <img src="../images/logo.png" alt="Logo" class="logo">
+         <h1>Terminus Main Quest Checklist</h1>
+      </header>
+
+      <!-- Navbar with Dropdown and Home Button -->
+      <nav class="navbar">
+         <select id="mapSelect" onchange="navigateToMap()">
+            <option value="">Choose Your Map</option>
+            <option value="../../resources/maps/LibertyBalls.html">Liberty Falls</option>
+            <option value="terminus.html">Terminus</option>
+            <option value="../../resources/maps/cdm.html">Citadelle des Morts</option>
+         </select>
+         <button onclick="window.location.href='../../index.html';">Home</button>
+      </nav>
+
+      <main class="main-content">
+         <section class="checklist-section">
+            <h2>Checklist</h2>
+            <div>
+               <input type="checkbox" id="amp1"><label for="amp1">All AMP Generators Powered-Up</label><br>
+               <input type="checkbox" id="docksLaptop"><label for="docksLaptop">All Electrical Box's Shot / Keycard Collected (Need DeadWire Ammo Mod)</label><br>
+               <input type="checkbox" id="commsLaptop"><label for="commsLaptop">Communications Laptop Activated</label><br>
+               <input type="checkbox" id="storageLaptop"><label for="storageLaptop">Storage Area Laptop Activated</label><br>
+               <input type="checkbox" id="docksLaptop2"><label for="docksLaptop2">Docks Laptop Activated</label><br>
+               <input type="checkbox" id="briefcaseCollected"><label for="briefcaseCollected">Briefcase Collected (Same room where the Elemental Pop Perk-a-Cola machine is located. On the table.)</label><br>
+               <input type="checkbox" id="multiphasicResonator"><label for="multiphasicResonator">Placed the Multiphasic Resonator (Same room where you collected keycard from.)</label><br>
+               <input type="checkbox" id="orbsCollected"><label for="orbsCollected">All 3 Orbs Collected & final part picked up (the 3 islands)</label><br>
+               <input type="checkbox" id="hardDriveCollected"><label for="hardDriveCollected">Hard Drive Collected (From tentacle Trap using crafted wonder weapon / take back to guard room located in spawn)</label><br>
+               <input type="checkbox" id="interrogationCode"><label for="interrogationCode">Interrogation Room Code Found</label><br>
+               <input type="checkbox" id="messHallCode"><label for="messHallCode">Mess Hall Code Found</label><br>
+               <input type="checkbox" id="engineeringRoomCode"><label for="engineeringRoomCode">Engineering Room Code Found</label><br>
+               <input type="checkbox" id="nathanDefeated"><label for="nathanDefeated">Nathan Defeated</label><br>
+               <input type="checkbox" id="keycardCollected"><label for="keycardCollected">Keycard collected (take back to Communications room)</label><br>
+               <input type="checkbox" id="bothNodesConnected"><label for="bothNodesConnected">Both Nodes Connected (Go to Shipwreck / Need To survive Lockdown)</label><br>
+               <input type="checkbox" id="hackingDeviceCollected"><label for="hackingDeviceCollected">Hacking Device Collected From Guard station</label><br>
+               <input type="checkbox" id="bombsDefused"><label for="bombsDefused">All 3 Bombs Defused</label><br>
+            </div>
+         </section>
+         <section class="puzzle-calculator-section">
+            <h2>Puzzle Calculator</h2>
+            <p>Use this tool to calculate the combinations for your puzzle-solving!</p>
+            <div class="grid-container">
+               <div id="cellX" class="cell" onclick="showOptions('cellX')">X</div>
+               <div id="cellY" class="cell" onclick="showOptions('cellY')">Y</div>
+               <div id="cellZ" class="cell" onclick="showOptions('cellZ')">Z</div>
+            </div>
+            <div id="options">
+               <div id="iconGrid"></div>
+               <button onclick="closeOptions()">Close</button>
+            </div>
+            <h2>Result: <span id="result">--, --, --</span></h2>
+            <button onclick="resetCells()">Reset</button>
+         </section>
+
+         <!-- Collapsible Final Boss Fight Section -->
+         <button type="button" class="collapsible">Final Boss Fight</button>
+         <div class="content">
+            <h3>Phase 1</h3>
+            <p>Patient 13 will have weak spots on either shoulder. Have one player draw the normal zombies' aggro... (unless solo).</p>
+            <h3>Phase 2</h3>
+            <p>Patient 13's weak spot will now be its tentacles. Follow the same strategy as Phase 1...</p>
+            <h3>Phase 3</h3>
+            <p>The arena's playable area will shrink, increasing difficulty...</p>
+         </div>
+      </main>
+
+      <footer class="footer">
+         <p>Developed By <a href="https://github.com/SirCryptic">SirCryptic</a></p>
+      </footer>
+
+      <script>
+         const images = [
+             { value: 0, src: "../images/puzzle/w-circle.png" },
+             { value: 10, src: "../images/puzzle/b-w-circle.png" },
+             { value: 11, src: "../images/puzzle/b-w-circle-side.png" },
+             { value: 22, src: "../images/puzzle/atom-1.png" },
+             { value: 21, src: "../images/puzzle/atom-2.png" },
+             { value: 20, src: "../images/puzzle/atom-3.png" }
+         ];
+         let selectedCell = null;
+         
+         function showOptions(cellId) {
+             selectedCell = cellId;
+             const iconGrid = document.getElementById("iconGrid");
+             iconGrid.innerHTML = '';
+             images.forEach((image) => {
+                 const iconOption = document.createElement("div");
+                 iconOption.style.cursor = "pointer";
+                 iconOption.onclick = () => setImage(cellId, image.value, image.src);
+                 const img = document.createElement("img");
+                 img.src = image.src;
+                 img.width = 50;
+                 img.height = 50;
+                 img.alt = image.value;
+                 iconOption.appendChild(img);
+                 iconGrid.appendChild(iconOption);
+             });
+             document.getElementById("options").style.display = "flex";
+         }
+
+         function setImage(cellId, value, src) {
+             const cell = document.getElementById(cellId);
+             cell.innerHTML = `<img src="${escapeHTML(src)}" width="50" height="50" alt="${value}">`;
+             calculateResults();
+             closeOptions();
+         }
+
+         function calculateResults() {
+             const x = getValue("cellX");
+             const y = getValue("cellY");
+             const z = getValue("cellZ");
+             if (x === null || y === null || z === null) return;
+             const formulaA = 2 * x + 11;
+             const formulaB = (2 * z + y) - 5;
+             const formulaC = Math.abs((y + z) - x);
+             document.getElementById("result").textContent = `${formulaA}, ${formulaB}, ${formulaC}`;
+         }
+
+         function getValue(cellId) {
+             const cell = document.getElementById(cellId);
+             const img = cell.querySelector('img');
+             return img ? parseInt(img.alt) : null;
+         }
+
+         function escapeHTML(str) {
+             const div = document.createElement('div');
+             div.textContent = str;
+             return div.innerHTML;
+         }
+
+         function closeOptions() {
+             document.getElementById("options").style.display = "none";
+         }
+
+         function resetCells() {
+             ['cellX', 'cellY', 'cellZ'].forEach(cellId => {
+                 document.getElementById(cellId).innerHTML = cellId.charAt(4);
+             });
+             document.getElementById("result").textContent = "--, --, --";
+             closeOptions();
+         }
+
+         // Function for navigation from dropdown
+         function navigateToMap() {
+            var selectedMap = document.getElementById("mapSelect").value;
+            if (selectedMap) {
+                window.location.href = selectedMap;
+            }
+         }
+         
+         // Collapsible functionality for boss fight section
+         const coll = document.getElementsByClassName("collapsible");
+         Array.from(coll).forEach(button => {
+             button.addEventListener("click", function() {
+                 this.classList.toggle("active");
+                 const content = this.nextElementSibling;
+                 if (content.style.display === "block") {
+                     content.style.display = "none";
+                 } else {
+                     content.style.display = "block";
+                 }
+             });
+         });
+      </script>
+   </body>
+</html>
