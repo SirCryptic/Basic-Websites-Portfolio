@@ -3,7 +3,6 @@
 Greetings and welcome to my portfolio of super basic websites. These websites can be hosted on a variety of platforms, including [000webhost](https://www.000webhost.com) or Even [GitHub](https://github.com)
 
 <div align="left">
-  <img src="https://visitor-badge.glitch.me/badge?page_id=sircryptic.Basic-Websites-Portfolio&left_text=My%20Page%20Visitors" alt="visitor badge">
   <img src="https://img.shields.io/github/stars/sircryptic/Basic-Websites-Portfolio.svg" alt="GitHub stars">
   <img src="https://img.shields.io/github/forks/sircryptic/Basic-Websites-Portfolio.svg" alt="GitHub forks">
 </div>
