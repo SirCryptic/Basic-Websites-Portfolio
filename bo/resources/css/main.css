@@ -106,6 +106,7 @@ body {
 .footer a:hover {
    text-decoration: underline;
 }
+/* Add this to your main.css */
 h2 {
    color: #ffcc00;
    font-size: 2rem;

@@ -1,45 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Come Back Soon - Citadelle des Morts</title>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-      <link rel="icon" href="../../resources/images/logo.png" type="image/png">
-      <link rel="stylesheet" href="../../resources/css/main.css">
-      
-      <style>
-         body {
-            background: url('../../resources/images/background.png') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Roboto', sans-serif;
-            color: #fff; /* Ensures text is visible on the background */
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Citadelle des Morts</title>
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+   <link rel="icon" href="../../resources/images/logo.png" type="image/png">
+   <link rel="stylesheet" href="../css/cdm.css">
+</head>
+<body>
+   <header class="header">
+      <img src="../../resources/images/logo.png" alt="Logo" class="logo">
+      <h1>Citadel Des Morts</h1>
+   </header>
+
+   <!-- Navbar with Dropdown and Home Button -->
+   <nav class="navbar">
+      <select id="mapSelect" onchange="navigateToMap()">
+         <option value="">Choose Your Map</option>
+         <option value="../../resources/maps/LibertyBalls.html">Liberty Falls</option>
+         <option value="../../resources/maps/terminus.html">Terminus</option>
+         <option value="cdm.html">Citadelle des Morts</option>
+      </select>
+      <button onclick="window.location.href='../../index.html';">Home</button>
+   </nav>
+
+   <!-- Raven Sword Cheat Sheet Image -->
+   <div class="cheat-sheet-container">
+    <img src="../../resources/images/cheat-sheet-cdm-raven.png" alt="Raven Sword Cheat Sheet">
+ </div>
+
+   <div class="calculator">
+      <div class="option-group">
+         <div class="roman-numerals">
+            <span class="roman selected" data-index="0">I</span>
+            <span class="roman" data-index="1">II</span>
+            <span class="roman" data-index="2">III</span>
+            <span class="roman" data-index="3">IV</span>
+            <span class="roman" data-index="4">V</span>
+            <span class="roman" data-index="5">VI</span>
+         </div>
+         <div class="icon-options">
+            <!-- Dynamically render icons -->
+            <script>
+               const iconsContainer = document.querySelector('.icon-options');
+               for (let i = 1; i <= 20; i++) {
+                  const iconElement = document.createElement('div');
+                  iconElement.className = 'image-container';
+                  iconElement.dataset.value = i;
+                  iconElement.innerHTML = `<img src="../../resources/images/runes/${i}.svg" alt="Rune ${i}">`;
+                  iconsContainer.appendChild(iconElement);
+               }
+            </script>
+         </div>
+         <h2>Solution Order:</h2>
+         <div class="answer">
+            <span id="ans1">1</span>
+            <span id="ans2">2</span>
+            <span id="ans3">3</span>
+            <span id="ans4">4</span>
+            <span id="ans5">5</span>
+            <span id="ans6">6</span>
+         </div>
+         <h2>Selected Runes:</h2>
+         <div class="numerals-box">
+            <div id="img1" class="image-box">--</div>
+            <div id="img2" class="image-box">--</div>
+            <div id="img3" class="image-box">--</div>
+            <div id="img4" class="image-box">--</div>
+            <div id="img5" class="image-box">--</div>
+            <div id="img6" class="image-box">--</div>
+         </div>
+      </div>
+   </div>
+
+   <footer class="footer">
+      <p>Developed By <a href="https://github.com/SirCryptic">SirCryptic</a></p>
+   </footer>
+
+   <script>
+      const romanElements = document.querySelectorAll('.roman');
+      const iconElements = document.querySelectorAll('.image-container');
+      const selectedIcons = Array(6).fill(null);
+      let currentSelection = 0;
+
+      romanElements.forEach((roman, index) => {
+         roman.addEventListener('click', () => {
+            currentSelection = index;
+            romanElements.forEach(el => el.classList.remove('selected'));
+            roman.classList.add('selected');
+         });
+      });
+
+      iconElements.forEach(icon => {
+         const value = parseInt(icon.dataset.value, 10);
+         const imageSrc = icon.querySelector('img').src;
+
+         icon.addEventListener('click', () => {
+            selectedIcons[currentSelection] = { value, imageSrc };
+            updateSelectedImages();
+            if (currentSelection < 5) {
+               currentSelection++;
+               romanElements.forEach(el => el.classList.remove('selected'));
+               romanElements[currentSelection].classList.add('selected');
+            }
+            iconElements.forEach(el => {
+               const elValue = parseInt(el.dataset.value, 10);
+               el.classList.toggle('grayscale', !selectedIcons.some(icon => icon?.value === elValue));
+            });
+         });
+      });
+
+      function updateSelectedImages() {
+         selectedIcons.forEach((icon, index) => {
+            const imageBox = document.getElementById(`img${index + 1}`);
+            if (icon) {
+               imageBox.innerHTML = `<img src="${icon.imageSrc}" alt="Rune ${icon.value}" />`;
+            } else {
+               imageBox.textContent = '--';
+            }
+         });
+      }
+
+      // Function to navigate to the selected map
+      function navigateToMap() {
+         const mapSelect = document.getElementById('mapSelect');
+         const selectedMap = mapSelect.value;
+         if (selectedMap) {
+            window.location.href = selectedMap;
          }
-         /* Add a fallback color in case the image fails */
-         body {
-            background-color: #333; /* Dark fallback color */
-         }
-      </style>
-   </head>
-   <body>
-      <header class="header">
-         <img src="../../resources/images/logo.png" alt="Logo" class="logo">
-         <h1>Come Back Soon</h1>
-      </header>
-
-      <!-- Navbar with Home Button -->
-      <nav class="navbar">
-         <button onclick="window.location.href='../../index.html';">Home</button>
-      </nav>
-
-      <!-- Main Content with Message -->
-      <main class="main-content">
-         <h2>We're working on it! Come back soon.</h2>
-         <p>Thank you for your patience. We are still working on the map for Citadelle des Morts. Stay tuned!</p>
-      </main>
-
-      <footer class="footer">
-         <p>Developed By <a href="https://github.com/SirCryptic">SirCryptic</a></p>
-      </footer>
-   </body>
+      }
+   </script>
+</body>
 </html>
