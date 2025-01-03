@@ -7,19 +7,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
       <link rel="icon" href="../../resources/images/logo.png" type="image/png">
       <link rel="stylesheet" href="../../resources/css/main.css">
-      
-      <style>
-         body {
-            background: url('../../resources/images/background.png') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Roboto', sans-serif;
-            color: #fff; /* Ensures text is visible on the background */
-         }
-         /* Add a fallback color in case the image fails */
-         body {
-            background-color: #333; /* Dark fallback color */
-         }
-      </style>
+      <link rel="stylesheet" href="../../resources/css/libertyballs.css">
    </head>
    <body>
       <header class="header">
@@ -27,8 +15,14 @@
          <h1>Come Back Soon</h1>
       </header>
 
-      <!-- Navbar with Home Button -->
+      <!-- Navbar with Dropdown and Home Button -->
       <nav class="navbar">
+         <select id="mapSelect" onchange="navigateToMap()">
+            <option value="">Choose Your Map</option>
+            <option value="LibertyBalls.html">Liberty Falls</option>
+            <option value="../../resources/maps/terminus.html">Terminus</option>
+            <option value="../../resources/maps/cdm.html">Citadelle des Morts</option>
+         </select>
          <button onclick="window.location.href='../../index.html';">Home</button>
       </nav>
 
@@ -41,5 +35,15 @@
       <footer class="footer">
          <p>Developed By <a href="https://github.com/SirCryptic">SirCryptic</a></p>
       </footer>
+
+      <script>
+         function navigateToMap() {
+            const mapSelect = document.getElementById('mapSelect');
+            const selectedMap = mapSelect.value;
+            if (selectedMap) {
+                window.location.href = selectedMap;
+            }
+         }
+      </script>
    </body>
 </html>

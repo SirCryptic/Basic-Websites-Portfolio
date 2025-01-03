@@ -9,7 +9,7 @@ body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
-       url('../images/terminus-bg.png') no-repeat center center fixed;
+       url('../images/cdm-background.png') no-repeat center center fixed;
     background-size: cover;
     color: #f1f1f1;
 }
@@ -211,17 +211,26 @@ body {
 .footer {
     text-align: center;
     margin-top: 40px;
-    padding: 10px 20px; /* Adjusting padding */
+    padding: 10px 20px;
  }
+ .cheat-sheet-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 0px;
+    font-weight: bold;
+ }
+ 
  .cheat-sheet-container {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
  }
-
+ 
  .cheat-sheet-container img {
     max-width: 100%;
     height: auto;
     border: 2px solid #ccc;
     border-radius: 10px;
  }
+ 
+ 
