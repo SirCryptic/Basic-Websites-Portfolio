@@ -3,87 +3,32 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Black Ops 6 Quest Checklists</title>
+      <title>Project Bo</title>
       <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
       <link rel="icon" href="resources/images/logo.png" type="image/png">
       <link rel="stylesheet" href="resources/css/main.css">
       <style>
-         /* Style for the navigation dropdown */
-         .navbar {
-            background-color: #333;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-         }
 
-         .navbar select {
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background-color: #fff;
-            color: #333;
-            cursor: pointer;
-         }
-
-         .navbar button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #f1f1f1;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-         }
-
-         .navbar button:hover {
-            background-color: #ddd;
-         }
-
-         .maps-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-         }
-
-         .map-card {
-            text-align: center;
-            width: 200px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-         }
-
-         .map-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-         }
-
-         .map-card p {
-            padding: 10px;
-            background-color: #f4f4f4;
-            margin: 0;
-            display: none; /* Hide the map names */
-         }
       </style>
    </head>
    <body>
       <header class="header">
          <img src="resources/images/logo.png" alt="Logo" class="logo">
-         <h1>Black Ops 6 Quest Checklists</h1>
+         <h1>Project Bo</h1>
       </header>
 
       <!-- Navbar with Dropdown and Home Button -->
       <nav class="navbar">
          <select id="mapSelect" onchange="navigateToMap()">
             <option value="">Choose Your Map</option>
-            <option value="resources/maps/LibertyBalls.html">Liberty Falls</option>
+            <option value="resources/maps/libertyballs.html">Liberty Falls</option>
             <option value="resources/maps/terminus.html">Terminus</option>
             <option value="resources/maps/cdm.html">Citadelle des Morts</option>
          </select>
-         <button onclick="window.location.href='index.html';">Home</button>
+         <!-- Container for buttons -->
+         <div class="nav-buttons">
+            <button onclick="window.location.href='resources/misc/camotracker.html';">Camo Tracker</button>
+         </div>
       </nav>
 
       <main class="main-content">
@@ -92,22 +37,22 @@
             <!-- Map 1 -->
             <a href="resources/maps/libertyballs.html" class="map-link">
                <div class="map-card">
-                  <img src="resources/images/libertyfalls-bg.png" alt="Map 1" class="map-image">
-                  <p>Map 1: Liberty Falls</p>
+                  <img src="resources/images/libertyfalls-bg.png" alt="" class="map-image">
+                  <p>Liberty Falls</p>
                </div>
             </a>
             <!-- Map 2 -->
             <a href="resources/maps/terminus.html" class="map-link">
                <div class="map-card">
-                  <img src="resources/images/terminus-bg.png" alt="Map 2" class="map-image">
-                  <p>Map 2: Terminus</p>
+                  <img src="resources/images/terminus-bg.png" alt="" class="map-image">
+                  <p>Terminus</p>
                </div>
             </a>
             <!-- Map 3 -->
             <a href="resources/maps/cdm.html" class="map-link">
                <div class="map-card">
-                  <img src="resources/images/cdm-bg.png" alt="Map 3" class="map-image">
-                  <p>Map 3: Citadelle des Morts</p>
+                  <img src="resources/images/cdm-bg.png" alt="" class="map-image">
+                  <p>Citadelle des Morts</p>
                </div>
             </a>
          </div>
@@ -125,6 +70,7 @@
                window.location.href = selectedMap;
             }
          }
+         
       </script>
    </body>
 </html>

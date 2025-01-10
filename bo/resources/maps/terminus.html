@@ -3,7 +3,7 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Terminus Quest Checklist</title>
+      <title>Terminus</title>
       <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
       <link rel="icon" href="../images/logo.png" type="image/png">
       <link rel="stylesheet" href="../css/terminus.css">
@@ -11,7 +11,7 @@
    <body>
       <header class="header">
          <img src="../images/logo.png" alt="Logo" class="logo">
-         <h1>Terminus Main Quest Checklist</h1>
+         <h1>Terminus</h1>
       </header>
 
       <!-- Navbar with Dropdown and Home Button -->
@@ -22,20 +22,42 @@
             <option value="terminus.html">Terminus</option>
             <option value="../../resources/maps/cdm.html">Citadelle des Morts</option>
          </select>
-         <button onclick="window.location.href='../../index.html';">Home</button>
+         <!-- Container for buttons -->
+         <div class="nav-buttons">
+            <button onclick="window.location.href='../../index.html';">Home</button>
+            <button onclick="window.location.href='../../resources/misc/camotracker.html';">Camo Tracker</button>
+         </div>
       </nav>
 
       <main class="main-content">
          <section class="checklist-section">
             <h2>Checklist</h2>
             <div>
-               <input type="checkbox" id="amp1"><label for="amp1">All AMP Generators Powered-Up</label><br>
-               <input type="checkbox" id="docksLaptop"><label for="docksLaptop">All Electrical Box's Shot / Keycard Collected (Need DeadWire Ammo Mod)</label><br>
+               <input type="checkbox" id="amp1">
+               <label for="amp1">All AMP Generators Powered-Up</label>
+               <span class="tooltip">
+                  <a href="#" class="tooltip-trigger">?</a>
+                  <div class="tooltip-content">
+                     <img src="../../resources/images/tooltips/amp-example.png" alt="AMP Generators Hint">
+                     <p>Activate all AMP generators scattered around the map. Here's what one looks like.</p>
+                  </div>
+               </span>
+               <br>
+               <input type="checkbox" id="docksLaptop">
+               <label for="docksLaptop">All Electrical Box's Shot / Keycard Collected (Need DeadWire Ammo Mod)</label>
+               <span class="tooltip">
+                  <a href="#" class="tooltip-trigger">?</a>
+                  <div class="tooltip-content">
+                     <img src="../../resources/images/tooltips/electricbox-example.png" alt="Electrical Box Hint">
+                     <p>Shoot the electrical boxes with DeadWire to unlock the keycard, The First 3 Are Shown In The Image. The Last 2 Are Above & next to amp generator 2.</p>
+                  </div>
+               </span>
+               <br>
+               <input type="checkbox" id="briefcaseCollected"><label for="briefcaseCollected">Briefcase Collected (Same room where the Elemental Pop Perk-a-Cola machine is located. On the table.)</label><br>
+               <input type="checkbox" id="multiphasicResonator"><label for="multiphasicResonator">Placed the Multiphasic Resonator you collected from the breifcase (Same room where you collected keycard from.)</label><br>
                <input type="checkbox" id="commsLaptop"><label for="commsLaptop">Communications Laptop Activated</label><br>
                <input type="checkbox" id="storageLaptop"><label for="storageLaptop">Storage Area Laptop Activated</label><br>
                <input type="checkbox" id="docksLaptop2"><label for="docksLaptop2">Docks Laptop Activated</label><br>
-               <input type="checkbox" id="briefcaseCollected"><label for="briefcaseCollected">Briefcase Collected (Same room where the Elemental Pop Perk-a-Cola machine is located. On the table.)</label><br>
-               <input type="checkbox" id="multiphasicResonator"><label for="multiphasicResonator">Placed the Multiphasic Resonator (Same room where you collected keycard from.)</label><br>
                <input type="checkbox" id="orbsCollected"><label for="orbsCollected">All 3 Orbs Collected & final part picked up (the 3 islands)</label><br>
                <input type="checkbox" id="hardDriveCollected"><label for="hardDriveCollected">Hard Drive Collected (From tentacle Trap using crafted wonder weapon / take back to guard room located in spawn)</label><br>
                <input type="checkbox" id="interrogationCode"><label for="interrogationCode">Interrogation Room Code Found</label><br>
@@ -79,6 +101,33 @@
       <footer class="footer">
          <p>Developed By <a href="https://github.com/SirCryptic">SirCryptic</a></p>
       </footer>
+
+      <script>
+document.querySelectorAll('.tooltip-trigger').forEach((trigger) => {
+   trigger.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent default link behavior
+      const tooltipContent = trigger.nextElementSibling;
+      const isVisible = tooltipContent.style.display === 'block';
+
+      // Hide all other tooltips
+      document.querySelectorAll('.tooltip-content').forEach((content) => {
+         content.style.display = 'none';
+      });
+
+      // Toggle the current tooltip
+      tooltipContent.style.display = isVisible ? 'none' : 'block';
+   });
+});
+
+// Close tooltips when clicking outside
+document.addEventListener('click', (e) => {
+   if (!e.target.closest('.tooltip')) {
+      document.querySelectorAll('.tooltip-content').forEach((content) => {
+         content.style.display = 'none';
+      });
+   }
+});
+      </script>
 
       <script>
          const images = [

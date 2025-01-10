@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Weapon Camo Tracker BO6 [Zombies Edition]</title>
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="../css/camotracker.css">
+   <link rel="stylesheet" href="../css/notification.css"> <!-- Link to the new notification CSS -->
+   <link rel="icon" href="../../resources/images/logo.png" type="image/png">
+</head>
+<body>
+   <!-- Notification Box -->
+   <div id="notification" class="notification">
+      <span>This site stores your progress in local storage. Your data will be saved for future visits.</span>
+      <a href="#" id="moreInfoLink" onclick="toggleMoreInfo()">More Info</a> <!-- More Info link -->
+      <button onclick="dismissNotification()">Got it</button>
+   </div>
+
+   <!-- Hidden Content for More Info -->
+   <div id="moreInfo" style="display: none;">
+      <p><strong>What is stored:</strong></p>
+      <ul>
+         <li>Your weapon selection and challenges progress.</li>
+         <li>Your checkbox states for each weapon's challenges.</li>
+      </ul>
+      <p><strong>What is not stored:</strong></p>
+      <ul>
+         <li>Your personal information or account details.</li>
+         <li>Any other data outside of the weapon tracker state.</li>
+      </ul>
+   </div>
+
+   <!-- Header -->
+   <header class="header">
+      <img src="../../resources/images/logo.png" alt="Logo" class="logo">
+      <h1>Camo Tracker [Z-Edition | Black Ops 6]</h1>
+   </header>
+
+   <!-- Navbar -->
+   <nav class="navbar">
+      <div class="navbar-left">
+         <select id="mapSelect" class="dropdown" onchange="navigateToMap()">
+            <option value="">Choose Your Map</option>
+            <option value="../../resources/maps/libertyballs.html">Liberty Falls</option>
+            <option value="../../resources/maps/terminus.html">Terminus</option>
+            <option value="../../resources/maps/cdm.html">Citadelle des Morts</option>
+         </select>
+      </div>
+      <div class="navbar-right">
+         <button onclick="window.location.href='../../index.html';" class="btn">Home</button>
+      </div>
+   </nav>
+
+   <!-- Weapon Tracker Section -->
+   <main class="main-content">
+      <div class="tracker-section">
+         <h2>Select a Weapon Type</h2>
+         <div class="weapon-dropdowns">
+            <label for="weaponType">Weapon Type:</label>
+            <select id="weaponType" class="dropdown" onchange="populateWeapons()">
+               <option value="">Choose Weapon Type</option>
+               <option value="Assault Rifles">Assault Rifles</option>
+               <option value="SMGs">SMGs</option>
+               <option value="Shotguns">Shotguns</option>
+               <option value="LMGs">LMGs</option>
+               <option value="Marksman Rifles">Marksman Rifles</option>
+               <option value="Sniper Rifles">Sniper Rifles</option>
+               <option value="Pistols">Pistols</option>
+               <option value="Launchers">Launchers</option>
+               <option value="Melee">Melee</option>
+               <option value="Special">Special</option>
+            </select>
+         </div>
+
+         <div class="weapon-names">
+            <label for="weaponName">Weapon Name:</label>
+            <select id="weaponName" class="dropdown" onchange="loadChallenges()">
+               <option value="">Select Weapon</option>
+            </select>
+         </div>
+
+         <!-- Weapon Stats -->
+         <h2>Challenges</h2>
+         <div id="challenges" class="stats-container checklist-section">
+            <label>
+               <input type="checkbox" id="criticalKills">
+               2000 Critical Kills (Required for Any Camo Challenges.)
+            </label>
+         </div>
+
+         <!-- Progress Tracker -->
+         <div id="progressSection">
+            <h3>Progress Tracker</h3>
+            <p>Progress: <span id="progressPercentage">0%</span></p>
+            <div id="progressBar" class="progress-bar">
+               <div id="progressFill" class="progress-fill"></div>
+            </div>
+         </div>
+      </div>
+   </main>
+
+   <!-- Footer -->
+   <footer class="footer">
+      <button onclick="downloadAllProgress()" class="btn">Download All Progress</button>
+      <p>Developed By <a href="https://github.com/SirCryptic">SirCryptic</a> | <a href="https://github.com/SirCryptic/bo/issues">Submit a Issue</a></p>
+   </footer>
+
+   <!-- JavaScript -->
+   <script>
+      // Show the notification box
+      window.onload = function() {
+         document.getElementById('notification').style.display = 'block';
+      }
+
+      // Function to dismiss the notification box
+      function dismissNotification() {
+         document.getElementById('notification').style.display = 'none';
+      }
+
+      // Function to toggle More Info section visibility
+      function toggleMoreInfo() {
+         const moreInfo = document.getElementById("moreInfo");
+         const link = document.getElementById("moreInfoLink");
+
+         if (moreInfo.style.display === "none") {
+            moreInfo.style.display = "block";
+            link.textContent = "Show Less"; // Change link text to "Show Less"
+         } else {
+            moreInfo.style.display = "none";
+            link.textContent = "More Info"; // Revert back to "More Info"
+         }
+      }
+
+      // Sample Data Needs Replacing //
+      const challengesByWeapon = {
+    "Assault Rifles": {
+        "XM4": [
+            "Camo: Liquify - Get 300 kills with Napalm Burst ammo mod.",
+            "Camo: Mainframe - Kill 30 Vermin.",
+            "Camo: Mystic Gold - Get 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 consecutive kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Kill 10 elite zombies.",
+        ],
+        "AK-74": [
+            "Camo: Chlorine - Get 5 Critical Kills rapidly x15.",
+            "Camo: Haunted - Get 300 Eliminations while it's Pack-a-Punched.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have Unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "AMES 85": [
+            "Camo: Hyperion - Get 300 Eliminations with Rare Rarity or higher.",
+            "Camo: Graveyard - Get 300 Eliminations with Brain Rot equipped.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "GPR 91": [
+            "Camo: Night Stalker - Get 300 Eliminations with Cryo Freeze equipped.",
+            "Camo: Frostblossom - Kill 100 enemies affected by your Tactical Equipment.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "MODEL L": [
+            "Camo: Ghost Blossom - Get 75 Armored Zombie Eliminations.",
+            "Camo: Walnut - Get 5 Critical Kills rapidly x15.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "GOBLIN MK 2": [
+            "Camo: Astral Pride - Get 10 Mangler Eliminations.",
+            "Camo: Blood Scent - Get 5 Critical Kills rapidly 15 times wht the Goblin MK2.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "AS VAL": [
+        "Camo: Malachite Steppes - Get 30 Parasite Eliminations.",
+            "Camo: Mountain Goat - Get 300 Eliminations with Dead Wire equipped.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "KRIG C": [
+            "Camo: Crowsbane - 	Kills 100 enemies affected by your Tactical Equipment.",
+            "Camo: Sunny Splash - Get 300 Eliminations with Cryo Freeze equipped.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 7 other assault rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+    },
+    "SMGs": {
+        "C9": [
+            "Camo: Infrared - Get 30 Parasite Eliminations.",
+            "Camo: Lynx - Get 300 Eliminations with the C9 while it's Pack-a-Punched.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "KSV": [
+            "Camo: Phoenix - Get 300 Eliminations with Dead Wire equipped.",
+            "Camo: Throttle - Get 300 Hipfire Kills.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "TANTO .22": [
+            "Camo: Solemn - Get 5 Critical Kills rapidly 15 times.",
+            "Camo: Aloha - Get 300 Eliminations with the Tanto .22 while it's Pack-a-Punched.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "PP-919": [
+            "Camo: Solvent - Get 300 Eliminations with Cryo Freeze equipped.",
+            "Camo: Stalking Shadow - Get 10 Kills without reloading 15 times.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "JACKAL PDW": [
+            "Camo: Plunge - Get 300 Eliminations with Napalm Burst equipped.",
+            "Camo: Distress - Get 300 Hipfire Kills.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "KOMPAKT 92": [
+            "Camo: Tequila Sunrise - Get 300 Eliminations with the Kompakt 92 at Rare Rarity or higher.",
+            "Camo: Voidthorn - Get 300 Point Blank kills.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "SAUG": [
+            "Camo: Whisper - Get 300 Eliminations with Dead Wire equipped.",
+            "Camo: Limewave - Get 300 Point Blank Kills.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 5 other SMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         "Shotguns": {
+            "MARINE SP": [
+            "Camo: Strawberry Mint - Get 300 Eliminations with the Marine SP at Rare Rarity or higher.",
+            "Camo: Peel Out - Get 300 Hipfire Kills.",
+            "Camo: Mystic Gold - 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 Shotguns.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "ASG-89": [
+            "Camo: Dream Eater - Kill 100 enemies affected by your Tactical Equipment.",
+            "Camo: Coin-Op - Get 30 Parasite Eliminations.",
+            "Camo: Mystic Gold - 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 Shotguns.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         "LMGs": {
+            "PU-21": [
+            "Camo: Vivid - Get 10 Mangler Eliminations.",
+            "Camo: Justice - Get 300 Hipfire Kills.",
+            "Camo: Mystic Gold - 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 3 LMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "XMG": [
+            "Camo: Hiss - Get 10 Kills without reloading 15 times.",
+            "Camo: Acid Slide - Get 300 Eliminations with Brain Rot equipped.",
+            "Camo: Mystic Gold - 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 3 LMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "GPMG-7": [
+            "Camo: Impressionist - Get 300 Point Blank Kills.",
+            "Camo: Other World - Get 10 Kills without reloading 15 times.",
+            "Camo: Mystic Gold - Get 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 3 LMGs.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         "Marksman Rifles": {
+            "SWAT 5.56": [
+            "Camo: Hyperspace - Kill 100 enemies affected by your Tactical Equipment.",
+            "Camo: Wrangler - Get 75 Armored Zombie Eliminations.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Marksman Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "Tsarkov 7.62": [
+            "Camo: Harvest - Kill 100 enemies affected by your Tactical Equipment.",
+            "Camo: Desert Sunset - Get 300 Eliminations with Dead Wire equipped.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Marksman Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "AEK-973": [
+            "Camo: Voidflame - Get 300 Eliminations with Cryo Freeze equipped.",
+            "Camo: Blood Moon - Get 300 Eliminations with Napalm Burst equipped.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Marksman Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "DM-10": [
+            "Camo: Furybloom - Get 5 Critical Kills rapidly 15 times.",
+            "Camo: Manta - Get 300 Eliminations with the DM-10 at Rare Rarity or higher.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Marksman Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         "Sniper Rifles": {
+            "LW3A1 Frostline": [
+            "Camo: Strata - Get 300 Eliminations with the LW3A1 Frostline at a Rare Rarity or higher.",
+            "Camo: Eventide - Get 30 Parasite Eliminations with the LW3A1 Frostline.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 3 Sniper Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "SVD": [
+            "Camo: Cartridge - Get 300 Eliminations with the SVD while it's Pack-a-Punched.",
+            "Camo: Integration - Get 5 Critical Kills rapidly 15 times.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 3 Sniper Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "LR 7.62": [
+            "Camo: Foxglove - Get 10 Mangler Eliminations.",
+            "Camo: Overcast - Get 300 Eliminations with Brain Rot equipped.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 3 Sniper Rifles.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         "Pistols": {
+            "9mm PM": [
+            "Camo: Yottabyte - 300 Eliminations with Cryo Freeze Ammo Mod Equipped.",
+            "Camo: Red Ring - 300 Eliminations with Deadwire Ammo Mod Equipped.",
+            "Camo: Mystic Gold - Get 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Pistols.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "Grekhova": [
+            "Camo: Hi-Fi - Get 10 Mangler Eliminations.",
+            "Camo: Ceres - Get 5 Critical Kills rapidly 15 times.",
+            "Camo: Mystic Gold - Get 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Pistols.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "GS45": [
+            "Camo: Velvetvine - Get 300 Eliminations with Rare rarity or higher.",
+            "Camo: Siamese - Get 300 hipfire Kills",
+            "Camo: Mystic Gold - Get 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Pistols.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "Stryder .22": [
+            "Camo: Wavy - 300 Point Blank Eliminations with Cryo Freeze Ammo Mod Equipped.",
+            "Camo: Condemn - 30 Vermin Kills.",
+            "Camo: Mystic Gold - Get 10 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 4 Pistols.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        
+         },
+         "Launchers": {
+            "CIGMA 2B": [
+            "Camo: CBRNE - Get 300 Eliminations with the Cigma 2B while it's Pack-a-Punched.",
+            "Camo: Technique - Get 75 Armored Zombie Eliminations.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 launchers or special weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "HE-1": [
+            "Camo: Decrypt - Get 30 Vermin Eliminations.",
+            "Camo: Renewed - Get 300 Eliminations with the HE-1 at Rare Rarity or higher.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 launchers or special weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         "Melee": {
+            "Knife": [
+            "Camo: Dying Bloom - Get 300 Eliminations with brain rot equipped.",
+            "Camo: Vacation Leopard - Kill 75 armoured zombies.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 8 other Melee Weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "Baseball Bat": [
+            "Camo: Banished - Get 300 Eliminations with the Baseball Bat at Rare Rarity or higher.",
+            "Camo: Contort - Get 30 Vermin Eliminations.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 other Melee Weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "Drill": [
+            "Camo: Shimmer - Get 10 Mangler Eliminations.",
+            "Camo: Glimmering Grove - Get 300 Eliminations with the Power Drill at Rare Rarity or higher.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 other Melee Weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+        "Cleaver": [
+            "Camo: Tragic Tomb - Get 75 Armored Zombie Eliminations with the Cleaver.",
+            "Camo: Shock Leopard - Get 300 Eliminations with the Cleaver at Rare Rarity or higher.",
+            "Camo: Mystic Gold - Get 15 kills rapidly x15.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 other Melee Weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+                 },
+         "Special": {
+            "Sirin 9mm": [
+            "Camo: Starsync - Get 30 Kills shortly after sprinting.",
+            "Camo: Tempt Fate - Get 30 Parasite Eliminations.",
+            "Camo: Mystic Gold - Get 15 kills rapidly 20 times.",
+            "To unlock Opal you must have unlocked Mystic Gold on 2 launchers or special weapons.",
+            "Camo: Opal - Kill 30 special zombies.",
+            "To unlock Afterlife challenges, you must have unlocked Opal on 33 other weapons.",
+            "Camo: Afterlife - Get 20 or more consecutive Kills 10 times without taking damage.",
+            "To unlock Nebula challenges, you must have Afterlife on 33 other weapons.",
+            "Camo: Nebula - Get 10 Elite Zombie Eliminations.",
+        ],
+         },
+         // Add more weapon challenges as needed
+      };
+
+      // Populate weapon names based on selected weapon type
+      function populateWeapons() {
+         const weaponType = document.getElementById("weaponType").value;
+         const weaponNameDropdown = document.getElementById("weaponName");
+
+         weaponNameDropdown.innerHTML = '<option value="">Select Weapon</option>';
+
+         if (challengesByWeapon[weaponType]) {
+            Object.keys(challengesByWeapon[weaponType]).forEach((weapon) => {
+               const option = document.createElement("option");
+               option.value = weapon;
+               option.textContent = weapon;
+               weaponNameDropdown.appendChild(option);
+            });
+         }
+      }
+
+      // Load challenges for the selected weapon
+      function loadChallenges() {
+         const weaponType = document.getElementById("weaponType").value;
+         const weaponName = document.getElementById("weaponName").value;
+         const challengesContainer = document.getElementById("challenges");
+
+         // Clear existing challenges except "2000 Critical Kills"
+         challengesContainer.innerHTML = `
+            <label>
+               <input type="checkbox" id="${weaponType}-${weaponName}-criticalKills" onchange="updateProgress()">
+               2000 Critical Kills (Required for Challenges)
+            </label>
+         `;
+
+         if (weaponType && weaponName && challengesByWeapon[weaponType][weaponName]) {
+            challengesByWeapon[weaponType][weaponName].forEach((challenge, index) => {
+               const challengeElement = document.createElement("label");
+               const checkboxId = `${weaponType}-${weaponName}-challenge-${index}`;
+               challengeElement.innerHTML = `
+                  <input type="checkbox" id="${checkboxId}" onchange="updateProgress()">
+                  ${challenge}
+               `;
+               challengesContainer.appendChild(challengeElement);
+            });
+         }
+
+         loadCheckboxState(weaponType, weaponName); // Restore saved states
+         updateProgress(); // Update progress after loading
+      }
+
+      // Save checkbox state for the current weapon
+      function saveCheckboxState(weaponType, weaponName) {
+         const checkboxes = document.querySelectorAll('#challenges input[type="checkbox"]');
+         const states = {};
+
+         checkboxes.forEach((checkbox) => {
+            states[checkbox.id] = checkbox.checked;
+         });
+
+         localStorage.setItem(`${weaponType}-${weaponName}`, JSON.stringify(states));
+      }
+
+      // Load checkbox state for the current weapon
+      function loadCheckboxState(weaponType, weaponName) {
+         const savedStates = JSON.parse(localStorage.getItem(`${weaponType}-${weaponName}`)) || {};
+         const checkboxes = document.querySelectorAll('#challenges input[type="checkbox"]');
+
+         checkboxes.forEach((checkbox) => {
+            checkbox.checked = !!savedStates[checkbox.id];
+            checkbox.addEventListener("change", () => saveCheckboxState(weaponType, weaponName));
+         });
+      }
+
+      // Update the progress bar based on the checked challenges
+      function updateProgress() {
+         const weaponType = document.getElementById("weaponType").value;
+         const weaponName = document.getElementById("weaponName").value;
+
+         const challengesContainer = document.getElementById("challenges");
+         const checkboxes = challengesContainer.querySelectorAll('input[type="checkbox"]');
+         let completed = 0;
+
+         checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+               completed++;
+            }
+         });
+
+         const total = checkboxes.length;
+         const progress = (completed / total) * 100;
+
+         // Update progress bar and percentage
+         document.getElementById("progressFill").style.width = `${progress}%`;
+         document.getElementById("progressPercentage").textContent = `${Math.round(progress)}%`;
+
+         saveCheckboxState(weaponType, weaponName); // Save progress in localStorage
+      }
+
+      // Map navigation
+      function navigateToMap() {
+         const map = document.getElementById("mapSelect").value;
+         if (map) {
+            window.location.href = map;
+         }
+      }
+   </script>
+<script>
+   // Define weapon types as they are in the dropdown
+   const weaponTypes = [
+      "Assault Rifles",
+      "SMGs",
+      "Shotguns",
+      "LMGs",
+      "Marksman Rifles",
+      "Sniper Rifles",
+      "Pistols",
+      "Launchers",
+      "Melee",
+      "Special"
+   ];
+
+   // Function to download progress for all weapons
+   function downloadAllProgress() {
+      const progressData = {};
+
+      // Iterate through all keys in localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+         const key = localStorage.key(i);
+
+         // Only process keys that match the format: weaponType-weaponName
+         const keyParts = key.split("-");
+         if (keyParts.length >= 2) {
+            const weaponType = keyParts[0];
+            const weaponName = keyParts[1];
+
+            // Ensure the weaponType exists in our defined list
+            if (weaponTypes.includes(weaponType)) {
+               const savedStates = JSON.parse(localStorage.getItem(key)) || {};
+
+               // Organize progress data by weapon type and weapon name
+               if (!progressData[weaponType]) {
+                  progressData[weaponType] = {};
+               }
+               progressData[weaponType][weaponName] = savedStates;
+            }
+         }
+      }
+
+      // Generate the text file content
+      const progressText = ["Weapon Challenges Progress:\n"];
+      weaponTypes.forEach((weaponType) => {
+         progressText.push(`Weapon Type: ${weaponType}`);
+         if (progressData[weaponType]) {
+            for (const [weaponName, challenges] of Object.entries(progressData[weaponType])) {
+               progressText.push(`  Weapon Name: ${weaponName}`);
+               progressText.push(`  Challenges Progress:`);
+               for (const [challengeKey, completed] of Object.entries(challenges)) {
+                  const challengeName = challengeKey.replace(`${weaponType}-${weaponName}-`, '');
+                  progressText.push(`    - ${challengeName}: ${completed ? 'Completed' : 'Incomplete'}`);
+               }
+            }
+         } else {
+            progressText.push(`  No progress recorded for this weapon type.`);
+         }
+         progressText.push(""); // Add a blank line between weapon types
+      });
+
+      // Create and download the file
+      const fileContent = progressText.join("\n");
+      const blob = new Blob([fileContent], { type: "text/plain" });
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = `Weapon-Progress.txt`;
+      downloadLink.click();
+   }
+</script>
+
+</body>
+</html>

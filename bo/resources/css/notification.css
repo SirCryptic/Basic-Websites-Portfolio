@@ -1,0 +1,42 @@
+/* Notification box styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    color: #f1f1f1;
+    z-index: 1000;
+    transition: margin-bottom 0.3s ease-in-out;
+    margin-bottom: 0;
+}
+.notification.expanded {
+    margin-bottom: 50px;
+}
+
+/* Other notification styling */
+.notification a {
+    color: #ffcc00;
+    text-decoration: none;
+}
+
+.notification button {
+    background-color: #ffcc00;
+    color: #222;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.notification button:hover {
+    background-color: #ffc107;
+}
+
+#moreInfo {
+    display: none;
+    margin-top: 10px;
+}

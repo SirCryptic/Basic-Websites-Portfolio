@@ -35,6 +35,46 @@ body {
    font-weight: 500;
 }
 
+/* Navbar Styles */
+.navbar {
+   background-color: rgba(0, 0, 0, 0.8);
+   padding: 10px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+}
+
+.navbar select {
+   padding: 10px;
+   font-size: 16px;
+   border: 1px solid #777;
+   border-radius: 5px;
+   background-color: #222;
+   color: #fff;
+   cursor: pointer;
+}
+
+.navbar .nav-buttons {
+   display: flex;
+   gap: 10px;
+}
+
+.navbar button {
+   padding: 10px 20px;
+   font-size: 16px;
+   background-color: #ffcc00;
+   color: #222;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   box-shadow: 0 3px 6px rgba(255, 204, 0, 0.5);
+}
+
+.navbar button:hover {
+   background-color: #ffc107;
+}
+
 /* Main Content Styles */
 .main-content {
    padding: 20px;
@@ -44,8 +84,11 @@ body {
 .main-content h2 {
    margin-bottom: 20px;
    color: #ffcc00;
+   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+   font-weight: 600;
 }
 
+/* Maps Container */
 .maps-container {
    display: flex;
    justify-content: center;
@@ -57,7 +100,7 @@ body {
 .map-card {
    width: 150px;
    height: 200px;
-   background: rgba(0, 0, 0, 0.8);
+   background: rgba(0, 0, 0, 0.85);
    border-radius: 12px;
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
    text-align: center;
@@ -79,12 +122,9 @@ body {
 }
 
 .map-card p {
-   margin-top: 10px;
-   color: #fff;
-   font-weight: 500;
+   display: none; /* Hides map names */
 }
 
-/* Links */
 .map-link {
    text-decoration: none;
 }
@@ -106,19 +146,8 @@ body {
 .footer a:hover {
    text-decoration: underline;
 }
-/* Add this to your main.css */
-h2 {
-   color: #ffcc00;
-   font-size: 2rem;
-   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
-   margin-top: 20px;
-   font-weight: 600;
-}
 
+/* Footer Paragraph */
 footer p {
    font-size: 14px;
-}
-
-footer a {
-   color: #ffcc00;
 }
