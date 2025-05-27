@@ -210,7 +210,7 @@
       <p class="map-note">Blue marker: IP-based location (may reflect VPN/Tor or ISP location).</p>
       <p class="map-note">Green marker: Your actual location if browser geolocation is allowed.</p>
       <p class="text-sm text-gray-500">To check for DNS leaks, visit <a href="https://dnsleaktest.com" target="_blank" class="underline">dnsleaktest.com</a>. (DNS leak tests require server-side logic, unavailable on GitHub Pages.)</p>
-      <p class="text-sm text-gray-500">This website does not store or share your IP or location data. All processing is client-side. </p>
+      <p class="text-sm text-gray-500">This website does not store or share your IP or location data. All processing is client-side.</p>
       <p class="text-sm text-gray-500">For more information, visit the <a href="privacy.html" class="underline">Privacy Notice</a>.</p>
     </div>
   </main>
@@ -222,315 +222,403 @@
     </a>
   </footer>
 
-  <script>
-    // Block bots based on user-agent
-    const userAgent = navigator.userAgent;
-    const botPattern = /bot|robot|curl|spider|crawler/i;
-    if (botPattern.test(userAgent)) {
-      document.body.innerHTML = '<h1 class="text-center text-white mt-10">Access Denied</h1>';
-      document.querySelector('main').classList.add('loaded');
-      document.getElementById('loading-overlay').classList.add('hidden');
-      throw new Error('Bot detected');
+<script>
+// Block bots based on user-agent
+const userAgent = navigator.userAgent;
+const botPattern = /bot|robot|curl|spider|crawler/i;
+if (botPattern.test(userAgent)) {
+  document.body.innerHTML = '<h1 class="text-center text-white mt-10">Access Denied</h1>';
+  document.querySelector('main').classList.add('loaded');
+  document.getElementById('loading-overlay').classList.add('hidden');
+  throw new Error('Bot detected');
+}
+
+// Display user agent immediately
+try {
+  const userAgentElement = document.getElementById('user-agent');
+  if (userAgentElement) userAgentElement.textContent = userAgent || 'Unknown';
+} catch (e) {}
+
+// Expanded VPN providers list
+const vpnProviders = [
+  'proton', 'nordvpn', 'expressvpn', 'surfshark', 'cyberghost', 'pia', 'private internet access',
+  'mullvad', 'windscribe', 'purevpn', 'ipvanish', 'tor', 'hide my ass', 'hola', 'zenmate',
+  'vyprvpn', 'tunnelbear', 'fastestvpn', 'astrill', 'avg vpn', 'avast', 'betternet', 'hotspot shield',
+  'privatevpn', 'strongvpn', 'torguard', 'atlas vpn', 'privado', 'ivpn', 'ovpn', 'datacamp',
+  'cloudflare', 'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr',
+  'ivacy', 'namecheap', 'hidemyass', 'slickvpn', 'safervpn', 'airvpn', 'f-secure', 'bitdefender',
+  'kaspersky', 'mcafee', 'totalvpn', 'securevpn', 'norton', 'worldstream', 'm247', 'leaseweb', 'hern'
+];
+
+// Valid country codes for flag validation
+const validCountryCodes = [
+  'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd',
+  'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw', 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv',
+  'kh', 'cm', 'ca', 'ky', 'cf', 'td', 'cl', 'cn', 'cx', 'cc', 'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr',
+  'cu', 'cw', 'cy', 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 'fo',
+  'fj', 'fi', 'fr', 'gf', 'pf', 'tf', 'ga', 'gm', 'ge', 'de', 'gh', 'gi', 'gr', 'gl', 'gd', 'gp', 'gu', 'gt',
+  'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'hk', 'hu', 'is', 'in', 'id', 'ir', 'iq', 'ie', 'im', 'il', 'it', 'jm',
+  'jp', 'je', 'jo', 'kz', 'ke', 'ki', 'kp', 'kr', 'kw', 'kg', 'la', 'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt',
+  'lu', 'mo', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mq', 'mr', 'mu', 'yt', 'mx', 'fm', 'md', 'mc', 'mn',
+  'me', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nc', 'nz', 'ni', 'ne', 'ng', 'nu', 'nf', 'mp', 'no',
+  'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 'pe', 'ph', 'pn', 'pl', 'pt', 'pr', 'qa', 're', 'ro', 'ru', 'rw',
+  'bl', 'sh', 'kn', 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sx', 'sk',
+  'si', 'sb', 'so', 'za', 'ss', 'es', 'lk', 'sd', 'sr', 'sj', 'se', 'ch', 'sy', 'tw', 'tj', 'tz', 'th', 'tl',
+  'tg', 'tk', 'to', 'tt', 'tn', 'tr', 'tm', 'tc', 'tv', 'ug', 'ua', 'ae', 'gb', 'us', 'um', 'uy', 'uz', 'vu',
+  've', 'vn', 'vg', 'vi', 'wf', 'eh', 'ye', 'zm', 'zw'
+];
+
+// Initialize map state
+let mapLoaded = false;
+let map = null;
+let defaultLat = 0;
+let defaultLon = 0;
+let realLat = null;
+let realLon = null;
+let ipMarker = null;
+let realMarker = null;
+let showingRealLocation = false;
+
+// Fade in content and hide overlay
+function fadeInContent() {
+  try {
+    const mainElement = document.querySelector('main');
+    const overlayElement = document.getElementById('loading-overlay');
+    if (mainElement) mainElement.classList.add('loaded');
+    if (overlayElement) {
+      overlayElement.classList.add('hidden');
+      setTimeout(() => {
+        overlayElement.style.display = 'none';
+      }, 500);
+    }
+  } catch (e) {}
+}
+
+// Show error and fade in
+function showError(message) {
+  try {
+    const errorElement = document.getElementById('error');
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.classList.remove('hidden');
+    }
+    ['ipv4', 'ipv6', 'isp', 'city', 'region', 'zip', 'country', 'timezone', 'coordinates'].forEach(id => {
+      const element = document.getElementById(id);
+      if (element) element.innerHTML = 'Unknown';
+    });
+    const flagImg = document.getElementById('flag');
+    if (flagImg) {
+      flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
+      flagImg.alt = 'Unknown country';
+      flagImg.classList.remove('hidden');
+    }
+    if (!mapLoaded) loadMap(0, 0);
+    fadeInContent();
+  } catch (e) {}
+}
+
+// Fetch IP information with timeout and retry
+async function fetchIPInfo(attempt = 1, maxAttempts = 3, usePrimaryAPI = true) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  try {
+    const apiUrl = usePrimaryAPI ? 'https://ipapi.co/json/' : 'https://ip-api.com/json/';
+    const response = await fetch(apiUrl, { signal: controller.signal });
+    const data = await response.json();
+
+    if (!response.ok || data.error || data.status === 'fail') {
+      throw new Error(data.reason || data.message || 'Failed to fetch IP data');
     }
 
-    // Display user agent immediately
+    // Normalize data
+    const normalizedData = usePrimaryAPI ? data : {
+      ip: data.query,
+      org: data.isp || data.org,
+      city: data.city,
+      region: data.regionName,
+      postal: data.zip,
+      country_name: data.country,
+      country_code: data.countryCode,
+      timezone: data.timezone,
+      latitude: data.lat,
+      longitude: data.lon,
+      proxy: false,
+      hosting: data.isp?.toLowerCase().includes('hosting') || data.org?.toLowerCase().includes('hosting') || false,
+      asn: data.as || ''
+    };
+
+    // Fetch IPv6
+    let ipv6 = null;
     try {
-      const userAgentElement = document.getElementById('user-agent');
-      if (userAgentElement) userAgentElement.textContent = userAgent || 'Unknown';
+      const ipifyResponse = await fetch('https://api64.ipify.org?format=json', { signal: controller.signal });
+      const ipifyData = await ipifyResponse.json();
+      if (ipifyData.ip.includes(':')) ipv6 = ipifyData.ip;
     } catch (e) {}
 
-    // Expanded VPN providers list
-    const vpnProviders = [
-      'proton', 'nordvpn', 'expressvpn', 'surfshark', 'cyberghost', 'pia', 'private internet access',
-      'mullvad', 'windscribe', 'purevpn', 'ipvanish', 'tor', 'hide my ass', 'hola', 'zenmate',
-      'vyprvpn', 'tunnelbear', 'fastestvpn', 'astrill', 'avg vpn', 'avast', 'betternet', 'hotspot shield',
-      'privatevpn', 'strongvpn', 'torguard', 'atlas vpn', 'privado', 'ivpn', 'ovpn', 'datacamp',
-      'cloudflare', 'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr',
-      'ivacy', 'namecheap', 'hidemyass', 'slickvpn', 'safervpn', 'airvpn', 'f-secure', 'bitdefender',
-      'kaspersky', 'mcafee', 'totalvpn', 'securevpn', 'norton'
-    ];
+    // Update UI and load map
+    updateUI(normalizedData, ipv6);
+    if (!mapLoaded) loadMap(normalizedData.latitude, normalizedData.longitude);
+    fadeInContent();
+  } catch (error) {
+    if (attempt < maxAttempts) {
+      setTimeout(() => fetchIPInfo(attempt + 1, maxAttempts, usePrimaryAPI), 2000);
+    } else if (usePrimaryAPI) {
+      fetchIPInfo(1, maxAttempts, false);
+    } else {
+      showError(`Failed to fetch IP information after ${maxAttempts} attempts. Please check your connection or try again later.`);
+    }
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
-    // Valid country codes for flag validation
-    const validCountryCodes = [
-      'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd',
-      'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw', 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv',
-      'kh', 'cm', 'ca', 'ky', 'cf', 'td', 'cl', 'cn', 'cx', 'cc', 'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr',
-      'cu', 'cw', 'cy', 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 'fo',
-      'fj', 'fi', 'fr', 'gf', 'pf', 'tf', 'ga', 'gm', 'ge', 'de', 'gh', 'gi', 'gr', 'gl', 'gd', 'gp', 'gu', 'gt',
-      'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'hk', 'hu', 'is', 'in', 'id', 'ir', 'iq', 'ie', 'im', 'il', 'it', 'jm',
-      'jp', 'je', 'jo', 'kz', 'ke', 'ki', 'kp', 'kr', 'kw', 'kg', 'la', 'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt',
-      'lu', 'mo', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mq', 'mr', 'mu', 'yt', 'mx', 'fm', 'md', 'mc', 'mn',
-      'me', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nc', 'nz', 'ni', 'ne', 'ng', 'nu', 'nf', 'mp', 'no',
-      'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 'pe', 'ph', 'pn', 'pl', 'pt', 'pr', 'qa', 're', 'ro', 'ru', 'rw',
-      'bl', 'sh', 'kn', 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sx', 'sk',
-      'si', 'sb', 'so', 'za', 'ss', 'es', 'lk', 'sd', 'sr', 'sj', 'se', 'ch', 'sy', 'tw', 'tj', 'tz', 'th', 'tl',
-      'tg', 'tk', 'to', 'tt', 'tn', 'tr', 'tm', 'tc', 'tv', 'ug', 'ua', 'ae', 'gb', 'us', 'um', 'uy', 'uz', 'vu',
-      've', 'vn', 'vg', 'vi', 'wf', 'eh', 'ye', 'zm', 'zw'
-    ];
+// Update UI with IP data
+function updateUI(data, ipv6) {
+  try {
+    const updateField = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.innerHTML = value || 'Unknown';
+    };
 
-    // Initialize map state
-    let mapLoaded = false;
-    let map = null;
-    let defaultLat = 0;
-    let defaultLon = 0;
-    let realLat = null;
-    let realLon = null;
-    let ipMarker = null;
-    let realMarker = null;
-    let showingRealLocation = false;
+    const isIPv6 = data.ip.includes(':');
+    updateField('ipv4', isIPv6 ? 'Not available' : data.ip);
+    updateField('ipv6', ipv6 || (isIPv6 ? data.ip : 'Not available'));
+    updateField('isp', data.org);
+    updateField('city', data.city);
+    updateField('region', data.region);
+    updateField('zip', data.postal);
+    updateField('country', data.country_name);
+    updateField('timezone', data.timezone);
+    updateField('coordinates', data.latitude && data.longitude ? `${data.latitude}, ${data.longitude}` : 'Unknown');
 
-    // Fade in content and hide overlay
-    function fadeInContent() {
-      try {
-        const mainElement = document.querySelector('main');
-        const overlayElement = document.getElementById('loading-overlay');
-        if (mainElement) mainElement.classList.add('loaded');
-        if (overlayElement) {
-          overlayElement.classList.add('hidden');
-          setTimeout(() => {
-            overlayElement.style.display = 'none';
-          }, 500);
-        }
-      } catch (e) {}
+    // Display flag
+    const flagImg = document.getElementById('flag');
+    if (flagImg) {
+      if (data.country_code && validCountryCodes.includes(data.country_code.toLowerCase())) {
+        flagImg.src = `https://flagcdn.com/24x18/${data.country_code.toLowerCase()}.png`;
+        flagImg.alt = `${data.country_name || 'Unknown'} flag`;
+      } else {
+        flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
+        flagImg.alt = 'Unknown country';
+      }
+      flagImg.classList.remove('hidden');
     }
 
-    // Show error and fade in
-    function showError(message) {
-      try {
-        const errorElement = document.getElementById('error');
-        if (errorElement) {
-          errorElement.textContent = message;
-          errorElement.classList.remove('hidden');
-        }
-        ['ipv4', 'ipv6', 'isp', 'city', 'region', 'zip', 'country', 'timezone', 'coordinates'].forEach(id => {
-          const element = document.getElementById(id);
-          if (element) element.innerHTML = 'Unknown';
-        });
-        const flagImg = document.getElementById('flag');
-        if (flagImg) {
-          flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
-          flagImg.alt = 'Unknown country';
-          flagImg.classList.remove('hidden');
-        }
-        if (!mapLoaded) loadMap(0, 0);
-        fadeInContent();
-      } catch (e) {}
-    }
+    // VPN/Tor detection
+    const orgLower = data.org?.toLowerCase() || '';
+    const isTorUserAgent = /TorBrowser|Tor\/[\d.]+/.test(userAgent);
+    const detectedProvider = vpnProviders.find(provider => orgLower.includes(provider));
+    const isTor = isTorUserAgent || orgLower.includes('tor') || detectedProvider === 'tor';
+    const isHosting = orgLower.includes('hosting') || orgLower.includes('cloud') || orgLower.includes('datacenter') || ['worldstream', 'm247', 'leaseweb', 'hern'].some(p => orgLower.includes(p));
+    const isVPN = data.proxy || detectedProvider || isTor;
 
-    // Fetch IP information with timeout and retry
-    async function fetchIPInfo(attempt = 1, maxAttempts = 3, usePrimaryAPI = true) {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-      try {
-        const apiUrl = usePrimaryAPI ? 'https://ipapi.co/json/' : 'https://ip-api.com/json/';
-        const response = await fetch(apiUrl, { signal: controller.signal });
-        const data = await response.json();
-
-        if (!response.ok || data.error || data.status === 'fail') {
-          throw new Error(data.reason || data.message || 'Failed to fetch IP data');
-        }
-
-        // Normalize data
-        const normalizedData = usePrimaryAPI ? data : {
-          ip: data.query,
-          org: data.isp || data.org,
-          city: data.city,
-          region: data.regionName,
-          postal: data.zip,
-          country_name: data.country,
-          country_code: data.countryCode,
-          timezone: data.timezone,
-          latitude: data.lat,
-          longitude: data.lon,
-          proxy: false,
-          hosting: data.isp?.toLowerCase().includes('hosting') || data.org?.toLowerCase().includes('hosting') || false,
-          asn: data.as || ''
-        };
-
-        // Fetch IPv6
-        let ipv6 = null;
-        try {
-          const ipifyResponse = await fetch('https://api64.ipify.org?format=json', { signal: controller.signal });
-          const ipifyData = await ipifyResponse.json();
-          if (ipifyData.ip.includes(':')) ipv6 = ipifyData.ip;
-        } catch (e) {}
-
-        // Update UI and load map
-        updateUI(normalizedData, ipv6);
-        if (!mapLoaded) loadMap(normalizedData.latitude, normalizedData.longitude);
-        fadeInContent();
-      } catch (error) {
-        if (attempt < maxAttempts) {
-          setTimeout(() => fetchIPInfo(attempt + 1, maxAttempts, usePrimaryAPI), 2000);
-        } else if (usePrimaryAPI) {
-          fetchIPInfo(1, maxAttempts, false);
-        } else {
-          showError(`Failed to fetch IP information after ${maxAttempts} attempts. Please check your connection or try again later.`);
-        }
-      } finally {
-        clearTimeout(timeoutId);
+    const torVpnElement = document.getElementById('tor-vpn');
+    const vpnNoteElement = document.getElementById('vpn-note');
+    if (torVpnElement) {
+      if (isVPN && detectedProvider) {
+        torVpnElement.innerHTML = `<strong>⚠️ VPN Detected:</strong> ${detectedProvider.charAt(0).toUpperCase() + detectedProvider.slice(1)}`;
+        torVpnElement.classList.remove('hidden');
+        if (vpnNoteElement) vpnNoteElement.classList.remove('hidden');
+      } else if (isTor) {
+        torVpnElement.innerHTML = '<strong>⚠️ Tor Detected</strong>';
+        torVpnElement.classList.remove('hidden');
+        if (vpnNoteElement) vpnNoteElement.classList.remove('hidden');
+      } else if (isHosting) {
+        torVpnElement.innerHTML = '<strong>⚠️ Possible VPN</strong>: ISP appears to be a hosting provider, which may indicate VPN usage.';
+        torVpnElement.classList.remove('hidden');
+        if (vpnNoteElement) vpnNoteElement.classList.remove('hidden');
+      } else {
+        torVpnElement.innerHTML = '<strong>✅ No VPN/Tor detected</strong>';
+        torVpnElement.classList.remove('hidden');
       }
     }
 
-    // Update UI with IP data
-    function updateUI(data, ipv6) {
+    // Store coordinates
+    defaultLat = data.latitude || 0;
+    defaultLon = data.longitude || 0;
+  } catch (e) {
+    showError('Failed to update IP information.');
+  }
+}
+
+// Lazy-load Leaflet and initialize map
+function loadMap(lat, lon) {
+  if (mapLoaded) return;
+  mapLoaded = true;
+  try {
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.async = true;
+    script.onload = () => {
       try {
-        const updateField = (id, value) => {
-          const element = document.getElementById(id);
-          if (element) element.innerHTML = value || 'Unknown';
-        };
-
-        const isIPv6 = data.ip.includes(':');
-        updateField('ipv4', isIPv6 ? 'Not available' : data.ip);
-        updateField('ipv6', ipv6 || (isIPv6 ? data.ip : 'Not available'));
-        updateField('isp', data.org);
-        updateField('city', data.city);
-        updateField('region', data.region);
-        updateField('zip', data.postal);
-        updateField('country', data.country_name);
-        updateField('timezone', data.timezone);
-        updateField('coordinates', data.latitude && data.longitude ? `${data.latitude}, ${data.longitude}` : 'Unknown');
-
-        // Display flag
-        const flagImg = document.getElementById('flag');
-        if (flagImg) {
-          if (data.country_code && validCountryCodes.includes(data.country_code.toLowerCase())) {
-            flagImg.src = `https://flagcdn.com/24x18/${data.country_code.toLowerCase()}.png`;
-            flagImg.alt = `${data.country_name || 'Unknown'} flag`;
-          } else {
-            flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
-            flagImg.alt = 'Unknown country';
-          }
-          flagImg.classList.remove('hidden');
+        const mapElement = document.getElementById('map');
+        if (mapElement) {
+          mapElement.classList.remove('loading');
+          map = L.map('map', { zoomControl: true }).setView([lat || 0, lon || 0], 13);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+          }).addTo(map);
+          ipMarker = L.marker([lat || 0, lon || 0], {
+            icon: L.icon({
+              iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41]
+            })
+          }).addTo(map).bindTooltip('VPN/Tor/ISP Location').openTooltip();
+          mapElement.style.zIndex = '1';
         }
-
-        // VPN/Tor detection
-        const orgLower = data.org?.toLowerCase() || '';
-        const isTorUserAgent = /TorBrowser|Tor\/[\d.]+/.test(userAgent);
-        const detectedProvider = vpnProviders.find(provider => orgLower.includes(provider));
-        const isTor = isTorUserAgent || orgLower.includes('tor') || detectedProvider === 'tor';
-        const isVPN = data.proxy || data.hosting || detectedProvider || isTor;
-        if (isVPN) {
-          const torVpnElement = document.getElementById('tor-vpn');
-          const vpnNoteElement = document.getElementById('vpn-note');
-          const vpnProviderElement = document.getElementById('vpn-provider');
-          if (torVpnElement) torVpnElement.classList.remove('hidden');
-          if (vpnNoteElement) vpnNoteElement.classList.remove('hidden');
-          if (vpnProviderElement) {
-            vpnProviderElement.textContent = isTor ? 'Tor' : (detectedProvider ? detectedProvider.charAt(0).toUpperCase() + detectedProvider.slice(1) : 'VPN/Tor');
-          }
-        } else {
-          const torVpnElement = document.getElementById('tor-vpn');
-          if (torVpnElement) {
-            torVpnElement.innerHTML = '<strong>✅ No VPN/Tor detected</strong>';
-            torVpnElement.classList.remove('hidden');
-          }
-        }
-
-        // Store coordinates
-        defaultLat = data.latitude || 0;
-        defaultLon = data.longitude || 0;
       } catch (e) {
-        showError('Failed to update IP information.');
+        if (document.getElementById('map')) {
+          document.getElementById('map').textContent = 'Failed to load map.';
+          document.getElementById('map').classList.remove('loading');
+        }
       }
-    }
+    };
+    script.onerror = () => {
+      if (document.getElementById('map')) {
+        document.getElementById('map').textContent = 'Failed to load map.';
+        document.getElementById('map').classList.remove('loading');
+      }
+    };
+    document.body.appendChild(script);
+  } catch (e) {}
+}
 
-    // Lazy-load Leaflet and initialize map
-    function loadMap(lat, lon) {
-      if (mapLoaded) return;
-      mapLoaded = true;
+// WebRTC Leak Detection
+try {
+  const webrtcButton = document.getElementById('check-webrtc');
+  if (webrtcButton) {
+    webrtcButton.addEventListener('click', async () => {
       try {
-        const script = document.createElement('script');
-        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-        script.async = true;
-        script.onload = () => {
-          try {
-            const mapElement = document.getElementById('map');
-            if (mapElement) {
-              mapElement.classList.remove('loading');
-              map = L.map('map', { zoomControl: true }).setView([lat || 0, lon || 0], 13);
-              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 18,
-              }).addTo(map);
-              ipMarker = L.marker([lat || 0, lon || 0], {
-                icon: L.icon({
-                  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-                  iconSize: [25, 41],
-                  iconAnchor: [12, 41]
-                })
-              }).addTo(map).bindTooltip('VPN/Tor/ISP Location').openTooltip();
-              mapElement.style.zIndex = '1';
-            }
-          } catch (e) {
-            if (document.getElementById('map')) {
-              document.getElementById('map').textContent = 'Failed to load map.';
-              document.getElementById('map').classList.remove('loading');
-            }
+        const resultElement = document.getElementById('webrtc-result');
+        if (resultElement) {
+          resultElement.textContent = 'Checking WebRTC leaks...';
+          resultElement.classList.remove('hidden', 'text-red-600', 'text-green-600', 'text-yellow-600');
+          const result = await checkWebRTCLeak();
+          if (result) {
+            resultElement.textContent = `⚠️ WebRTC Leak Detected: ${result.type === 'mdns' ? 'mDNS (' + result.value + ')' : result.type === 'ip' ? 'IP (' + result.value + ')' : 'Unknown (' + result.value + ')'}`;
+            resultElement.classList.add('text-red-600');
+          } else if (result === null) {
+            resultElement.textContent = '✅ WebRTC Disabled or No Leaks Detected';
+            resultElement.classList.add('text-green-600');
+          } else {
+            resultElement.textContent = '✅ No WebRTC Leaks Detected';
+            resultElement.classList.add('text-green-600');
           }
-        };
-        script.onerror = () => {
-          if (document.getElementById('map')) {
-            document.getElementById('map').textContent = 'Failed to load map.';
-            document.getElementById('map').classList.remove('loading');
-          }
-        };
-        document.body.appendChild(script);
-      } catch (e) {}
-    }
-
-    // WebRTC Leak Detection
-    try {
-      const webrtcButton = document.getElementById('check-webrtc');
-      if (webrtcButton) {
-        webrtcButton.addEventListener('click', async () => {
-          try {
-            const resultElement = document.getElementById('webrtc-result');
-            if (resultElement) {
-              resultElement.textContent = 'Checking WebRTC leaks...';
-              resultElement.classList.remove('hidden', 'text-red-600', 'text-green-600');
-              const ip = await checkWebRTCLeak();
-              resultElement.textContent = ip ? `⚠️ WebRTC Leak Detected: ${ip}` : '✅ No WebRTC leaks detected.';
-              resultElement.classList.add(ip ? 'text-red-600' : 'text-green-600');
-            }
-          } catch (e) {}
-        });
+        }
+      } catch (e) {
+        const resultElement = document.getElementById('webrtc-result');
+        if (resultElement) {
+          resultElement.textContent = '⚠️ Error Checking WebRTC Leaks';
+          resultElement.classList.add('text-red-600');
+        }
       }
-    } catch (e) {}
+    });
+  }
+} catch (e) {}
 
-    async function checkWebRTCLeak() {
-      return new Promise((resolve) => {
-        try {
-          const rtc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-          rtc.createDataChannel('');
-          rtc.createOffer().then(offer => rtc.setLocalDescription(offer)).catch(() => resolve(null));
-          rtc.onicecandidate = (event) => {
-            if (event.candidate) {
-              const ip = event.candidate.candidate.split(' ')[4];
-              if (ip && ip !== '127.0.0.1' && ip !== '::1') resolve(ip);
+async function checkWebRTCLeak() {
+  return new Promise((resolve) => {
+    try {
+      if (!window.RTCPeerConnection) {
+        console.log('WebRTC is not supported or disabled');
+        return resolve(null);
+      }
+      const rtc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+      rtc.createDataChannel('');
+      rtc.createOffer().then(offer => rtc.setLocalDescription(offer)).catch(e => {
+        console.log('WebRTC offer creation failed:', e);
+        resolve(null);
+      });
+      rtc.onicecandidate = (event) => {
+        if (event.candidate) {
+          const candidate = event.candidate.candidate;
+          console.log('ICE Candidate:', candidate); // Debug log
+          // Stricter regex for IPv4, IPv6, and mDNS
+          const ipMatch = candidate.match(/((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|([0-9a-f:]{2,39})|([a-z0-9-]{1,63}\.local))/i);
+          if (ipMatch) {
+            const result = ipMatch[0];
+            // Validate IPv4
+            if (result.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)) {
+              const octets = result.split('.').map(Number);
+              if (octets.every(o => o >= 0 && o <= 255) && result !== '127.0.0.1') {
+                return resolve({ type: 'ip', value: result });
+              }
             }
-          };
-          setTimeout(() => resolve(null), 1000);
-        } catch (e) {
+            // Validate IPv6
+            else if (result.match(/^[0-9a-f:]{2,39}$/i)) {
+              if (result !== '::1' && result.match(/^[0-9a-f:]+$/i) && result.includes(':')) {
+                return resolve({ type: 'ip', value: result });
+              }
+            }
+            // Validate mDNS
+            else if (result.match(/^[a-z0-9-]{1,63}\.local$/i)) {
+              return resolve({ type: 'mdns', value: result });
+            }
+          }
+        } else {
+          // No more candidates
           resolve(null);
         }
-      });
+      };
+      setTimeout(() => {
+        console.log('WebRTC check timed out');
+        resolve(null);
+      }, 2000); // Timeout for reliability
+    } catch (e) {
+      console.log('WebRTC check failed:', e);
+      resolve(null);
     }
+  });
+}
 
-    // Geolocation handling
-    try {
-      const locateButton = document.getElementById('locate');
-      const toggleButton = document.getElementById('toggle-location');
-      if (!navigator.geolocation) {
-        if (locateButton) {
-          locateButton.disabled = true;
-          locateButton.title = 'Geolocation not supported by your browser';
+// Geolocation handling
+try {
+  const locateButton = document.getElementById('locate');
+  const toggleButton = document.getElementById('toggle-location');
+  if (!navigator.geolocation) {
+    if (locateButton) {
+      locateButton.disabled = true;
+      locateButton.title = 'Geolocation not supported by your browser';
+    }
+    if (toggleButton) {
+      toggleButton.disabled = true;
+      toggleButton.title = 'Show Real Location';
+    }
+  } else {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        realLat = pos.coords.latitude;
+        realLon = pos.coords.longitude;
+        if (map && realMarker) map.removeLayer(realMarker);
+        if (map) {
+          realMarker = L.marker([realLat, realLon], {
+            icon: L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41]
+            })
+          }).addTo(map).bindTooltip('Real Location').openTooltip();
+          map.setView([defaultLat, defaultLon], 13);
+          if (ipMarker) ipMarker.openTooltip();
+          if (toggleButton) {
+            toggleButton.disabled = false;
+            toggleButton.title = 'Show Real Location';
+          }
         }
-        if (toggleButton) {
-          toggleButton.disabled = true;
-          toggleButton.title = 'Show Real Location';
-        }
-      } else {
+      },
+      () => {},
+      { timeout: 8000, maximumAge: 60000 }
+    );
+  }
+
+  // Refresh real location
+  if (locateButton) {
+    locateButton.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        locateButton.disabled = true;
+        locateButton.innerHTML = '<span class="pulse-loader"><span></span><span></span><span></span></span> Fetching...';
         navigator.geolocation.getCurrentPosition(
           pos => {
             realLat = pos.coords.latitude;
@@ -544,99 +632,67 @@
                   iconAnchor: [12, 41]
                 })
               }).addTo(map).bindTooltip('Real Location').openTooltip();
+            }
+            if (showingRealLocation) {
+              map.setView([realLat, realLon], 13);
+              if (realMarker) realMarker.openTooltip();
+            } else {
               map.setView([defaultLat, defaultLon], 13);
               if (ipMarker) ipMarker.openTooltip();
-              if (toggleButton) {
-                toggleButton.disabled = false;
-                toggleButton.title = 'Show Real Location';
-              }
             }
-          },
-          () => {},
-          { timeout: 8000, maximumAge: 60000 }
-        );
-      }
-
-      // Refresh real location
-      if (locateButton) {
-        locateButton.addEventListener('click', () => {
-          if (navigator.geolocation) {
-            locateButton.disabled = true;
-            locateButton.innerHTML = '<span class="pulse-loader"><span></span><span></span><span></span></span> Fetching...';
-            navigator.geolocation.getCurrentPosition(
-              pos => {
-                realLat = pos.coords.latitude;
-                realLon = pos.coords.longitude;
-                if (map && realMarker) map.removeLayer(realMarker);
-                if (map) {
-                  realMarker = L.marker([realLat, realLon], {
-                    icon: L.icon({
-                      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-                      iconSize: [25, 41],
-                      iconAnchor: [12, 41]
-                    })
-                  }).addTo(map).bindTooltip('Real Location').openTooltip();
-                }
-                if (showingRealLocation) {
-                  map.setView([realLat, realLon], 13);
-                  if (realMarker) realMarker.openTooltip();
-                } else {
-                  map.setView([defaultLat, defaultLon], 13);
-                  if (ipMarker) ipMarker.openTooltip();
-                }
-                if (toggleButton) {
-                  toggleButton.disabled = false;
-                  toggleButton.title = showingRealLocation ? 'Show VPN/Tor Location' : 'Show Real Location';
-                }
-                locateButton.disabled = false;
-                locateButton.innerHTML = '📍 Refresh Real Location';
-              },
-              err => {
-                alert(`Geolocation error: ${err.message}. Please enable location access.`);
-                locateButton.disabled = false;
-                locateButton.innerHTML = '📍 Refresh Real Location';
-              },
-              { timeout: 8000, maximumAge: 60000 }
-            );
-          } else {
-            alert('Geolocation not supported by your browser.');
+            if (toggleButton) {
+              toggleButton.disabled = false;
+              toggleButton.title = showingRealLocation ? 'Show VPN/Tor Location' : 'Show Real Location';
+            }
             locateButton.disabled = false;
             locateButton.innerHTML = '📍 Refresh Real Location';
-          }
-        });
+          },
+          err => {
+            alert(`Geolocation error: ${err.message}. Please enable location access.`);
+            locateButton.disabled = false;
+            locateButton.innerHTML = '📍 Refresh Real Location';
+          },
+          { timeout: 8000, maximumAge: 60000 }
+        );
+      } else {
+        alert('Geolocation not supported by your browser.');
+        locateButton.disabled = false;
+        locateButton.innerHTML = '📍 Refresh Real Location';
       }
+    });
+  }
 
-      // Toggle location
-      if (toggleButton) {
-        toggleButton.addEventListener('click', () => {
-          if (!realLat || !realLon) {
-            showError('Real location unavailable. Please use "Refresh Real Location" first.');
-            return;
-          }
-          if (showingRealLocation) {
-            map.setView([defaultLat, defaultLon], 13);
-            if (ipMarker) ipMarker.openTooltip();
-            showingRealLocation = false;
-            toggleButton.title = 'Show Real Location';
-          } else {
-            map.setView([realLat, realLon], 13);
-            if (realMarker) realMarker.openTooltip();
-            showingRealLocation = true;
-            toggleButton.title = 'Show VPN/Tor Location';
-          }
-        });
+  // Toggle location
+  if (toggleButton) {
+    toggleButton.addEventListener('click', () => {
+      if (!realLat || !realLon) {
+        showError('Real location unavailable. Please use "Refresh Real Location" first.');
+        return;
       }
-    } catch (e) {}
+      if (showingRealLocation) {
+        map.setView([defaultLat, defaultLon], 13);
+        if (ipMarker) ipMarker.openTooltip();
+        showingRealLocation = false;
+        toggleButton.title = 'Show Real Location';
+      } else {
+        map.setView([realLat, realLon], 13);
+        if (realMarker) realMarker.openTooltip();
+        showingRealLocation = true;
+        toggleButton.title = 'Show VPN/Tor Location';
+      }
+    });
+  }
+} catch (e) {}
 
-    // Start fetching IP info
-    try {
-      setTimeout(() => {
-        if (!document.querySelector('main').classList.contains('loaded')) {
-          showError('Failed to load IP information. Please try again later.');
-        }
-      }, 5000);
-      fetchIPInfo();
-    } catch (e) {}
-  </script>
+// Start fetching IP info
+try {
+  setTimeout(() => {
+    if (!document.querySelector('main').classList.contains('loaded')) {
+      showError('Failed to load IP information. Please try again later.');
+    }
+  }, 5000);
+  fetchIPInfo();
+} catch (e) {}
+</script>
 </body>
 </html>
