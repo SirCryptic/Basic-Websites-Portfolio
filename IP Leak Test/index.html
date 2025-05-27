@@ -6,36 +6,44 @@
   <meta name="description" content="Free open-source IP Leak Test to check your IP address (IPv4/IPv6), location, ISP, and VPN/Tor status with a responsive map." />
   <meta name="keywords" content="IP geolocation, IP lookup, VPN detection, Tor detection, IPv6, IPv4, location tracker, privacy tool, open source" />
   <meta name="author" content="sircryptic" />
-  <meta property="og:title" content="Free Open Source IP Leak Test by sircryptic" />
+  <meta property="og:title" content="Free Open Source IP Leak Test" />
   <meta property="og:description" content="Discover your IP address (IPv4/IPv6), location, and VPN/Tor status with this free open-source tool featuring a dynamic map." />
-  <meta property="og:image" content="https://img.icons8.com/emoji/48/globe.png" />
+  <meta property="og:image" content="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
   <meta property="og:url" content="https://sircryptic.github.io/ip-geolocation" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Free Open Source IP Leak Test by sircryptic" />
+  <meta name="twitter:title" content="Free Open Source IP Leak Test" />
   <meta name="twitter:description" content="Check your IP (IPv4/IPv6), location, and VPN/Tor status for free!" />
-  <meta name="twitter:image" content="https://img.icons8.com/emoji/48/globe.png" />
+  <meta name="twitter:image" content="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
   <title>My IP Information</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/48/globe.png" />
+  <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
       min-height: 100vh;
       font-family: 'Inter', sans-serif;
+      margin: 0;
     }
     .container {
       max-width: 48rem;
       margin: 0 auto;
       padding: 1rem;
     }
+    main {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    main.loaded {
+      opacity: 1;
+    }
     .card {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      transform: translateY(0);
+      border-radius: 1rem;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
@@ -44,8 +52,21 @@
     }
     #map {
       height: 16rem;
+      width: 100%;
       border-radius: 0.5rem;
       margin-top: 1rem;
+      background: #e5e7eb;
+      position: relative;
+      z-index: 1;
+    }
+    #map.loading::before {
+      content: 'Loading map...';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #4b5563;
+      font-size: 1rem;
     }
     @media (min-width: 640px) {
       #map { height: 20rem; }
@@ -66,10 +87,59 @@
       color: #dc2626;
       font-size: 0.9rem;
     }
-    .vpn-note {
+    .vpn-note, .map-note {
       color: #4b5563;
       font-size: 0.9rem;
       font-style: italic;
+    }
+    .pulse-loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pulse-loader span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #2563eb;
+      border-radius: 50%;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    .pulse-loader span:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+    .pulse-loader span:nth-child(3) {
+      animation-delay: 0.8s;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.7; }
+    }
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    #loading-overlay.hidden {
+      opacity: 0;
+    }
+    #loading-overlay .loading-text {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     footer {
       display: flex;
@@ -85,129 +155,102 @@
       flex-grow: 1;
       text-align: center;
     }
-    footer a {
-      transition: opacity 0.3s ease;
-    }
     footer a:hover {
       opacity: 0.8;
-    }
-    .spinner {
-      border: 2px solid #f3f3f3;
-      border-top: 2px solid #2563eb;
-      border-radius: 50%;
-      width: 1.5rem;
-      height: 1.5rem;
-      animation: spin 1s linear infinite;
-      display: inline-block;
-      vertical-align: middle;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .map-note {
-      color: #4b5563;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body class="font-sans text-gray-800">
+  <div id="loading-overlay">
+    <div class="loading-text">
+      Gathering Information
+      <span class="pulse-loader"><span></span><span></span><span></span></span>
+    </div>
+  </div>
   <main class="container py-6 sm:py-12">
-    <div class="card rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6">
+    <div class="card p-6 sm:p-8 space-y-6">
       <h1 class="text-2xl sm:text-3xl font-bold text-indigo-700 flex items-center gap-2">
         🌍 Free Open Source IP Leak Test
       </h1>
 
       <div id="ip-info" class="space-y-2 text-base sm:text-lg leading-relaxed">
-        <p><strong>IPv4 Address:</strong> <span id="ipv4"><span class="spinner"></span> Loading...</span></p>
-        <p><strong>IPv6 Address:</strong> <span id="ipv6"><span class="spinner"></span> Loading...</span></p>
-        <p id="tor-vpn" class="text-yellow-600 hidden"><strong>⚠️ Privacy:</strong> <span id="vpn-provider">VPN/Tor</span> detected (IP reflects VPN/Tor server)</p>
+        <p><strong>IPv4 Address:</strong> <span id="ipv4"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
+        <p><strong>IPv6 Address:</strong> <span id="ipv6"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
         <p><strong>User Agent:</strong> <span id="user-agent">Loading...</span></p>
+        <p id="tor-vpn" class="text-yellow-600 hidden"><strong>⚠️ Privacy:</strong> <span id="vpn-provider">VPN/Tor</span> detected (IP reflects VPN/Tor server)</p>
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600 mt-4">📋 My IP Information</h2>
-        <p><strong>ISP:</strong> <span id="isp"><span class="spinner"></span> Loading...</span></p>
-        <p><strong>City:</strong> <span id="city"><span class="spinner"></span> Loading...</span></p>
-        <p><strong>Region:</strong> <span id="region"><span class="spinner"></span> Loading...</span></p>
-        <p><strong>Zip:</strong> <span id="zip"><span class="spinner"></span> Loading...</span></p>
+        <p><strong>ISP:</strong> <span id="isp"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
+        <p><strong>City:</strong> <span id="city"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
+        <p><strong>Region:</strong> <span id="region"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
+        <p><strong>Zip:</strong> <span id="zip"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
         <p>
-          <strong>Country:</strong> <span id="country"><span class="spinner"></span> Loading...</span>
+          <strong>Country:</strong> <span id="country"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span>
           <img id="flag" src="" alt="Country flag" class="inline ml-2 rounded-sm shadow-sm hidden" />
         </p>
-        <p><strong>Timezone:</strong> <span id="timezone"><span class="spinner"></span> Loading...</span></p>
-        <p><strong>Coordinates:</strong> <span id="coordinates"><span class="spinner"></span> Loading...</span></p>
-        <p id="vpn-note" class="vpn-note hidden">Note: Using a VPN/Tor may mask your real IP and location. Allow browser geolocation to see your actual position on the map. Try disabling your VPN/Tor to confirm your real IP.</p>
+        <p><strong>Timezone:</strong> <span id="timezone"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
+        <p><strong>Coordinates:</strong> <span id="coordinates"><span class="pulse-loader"><span></span><span></span><span></span></span> Loading...</span></p>
+        <p id="vpn-note" class="vpn-note hidden">Note: Using a VPN/Tor may mask your real IP and location. Allow browser geolocation to see your actual position on the map.</p>
         <p id="error" class="error hidden"></p>
+        <p id="webrtc-result" class="hidden"></p>
       </div>
 
-      <div class="flex space-x-4">
+      <div class="flex flex-wrap space-x-4 gap-2">
+        <button id="check-webrtc" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          Check WebRTC Leaks
+        </button>
         <button id="locate" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" title="Refresh your real location using browser geolocation">
           📍 Refresh Real Location
         </button>
-        <button id="toggle-map" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" title="Toggle between VPN/Tor and real location views" disabled>
-          Toggle Map View
+        <button id="toggle-location" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" title="Show Real Location" disabled>
+          Toggle Location
         </button>
       </div>
 
-      <div id="map"></div>
-      <p class="map-note">Blue marker: IP-based location (may reflect VPN/Tor or even your ISP Location).</p>
-      <p class="map-note">Green marker: Shows your actual location if you allow browser/device geolocation.</p>
-      <p class="text-sm text-gray-500">Note: This tool is free and open source. It does not store or share your IP address or location data.</p>
-      <p class="text-sm text-gray-500">For more information, check the <a href="privacy.html" class="underline">Privacy Notice</a>.</p>
+      <div id="map" class="loading"></div>
+      <p class="map-note">Blue marker: IP-based location (may reflect VPN/Tor or ISP location).</p>
+      <p class="map-note">Green marker: Your actual location if browser geolocation is allowed.</p>
+      <p class="text-sm text-gray-500">To check for DNS leaks, visit <a href="https://dnsleaktest.com" target="_blank" class="underline">dnsleaktest.com</a>. (DNS leak tests require server-side logic, unavailable on GitHub Pages.)</p>
+      <p class="text-sm text-gray-500">This website does not store or share your IP or location data. All processing is client-side. </p>
+      <p class="text-sm text-gray-500">For more information, visit the <a href="privacy.html" class="underline">Privacy Notice</a>.</p>
     </div>
   </main>
 
   <footer>
-    <span class="footer-text">Free Open Source IP Leak Test | Developed by sircryptic | <a href="privacy.html" class="underline">Privacy Notice</a></span>
+    <span class="footer-text">Free Open Source IP Leak Test | <a href="privacy.html" class="underline">Privacy Notice</a></span>
     <a href="https://github.com/sircryptic" target="_blank">
       <img src="https://img.icons8.com/fluency/24/github.png" alt="GitHub" />
     </a>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     // Block bots based on user-agent
     const userAgent = navigator.userAgent;
     const botPattern = /bot|robot|curl|spider|crawler/i;
     if (botPattern.test(userAgent)) {
       document.body.innerHTML = '<h1 class="text-center text-white mt-10">Access Denied</h1>';
+      document.querySelector('main').classList.add('loaded');
+      document.getElementById('loading-overlay').classList.add('hidden');
       throw new Error('Bot detected');
     }
 
-    // Initialize map with fallback coordinates
-    let defaultLat = 0;
-    let defaultLon = 0;
-    let realLat = null;
-    let realLon = null;
-    let map = L.map('map', { zoomControl: true }).setView([defaultLat, defaultLon], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    }).addTo(map);
-    L.control.scale().addTo(map);
-    let ipMarker = null;
-    let realMarker = null;
-
     // Display user agent immediately
-    const userAgentElement = document.getElementById('user-agent');
-    if (userAgentElement) userAgentElement.textContent = userAgent || 'Unknown';
+    try {
+      const userAgentElement = document.getElementById('user-agent');
+      if (userAgentElement) userAgentElement.textContent = userAgent || 'Unknown';
+    } catch (e) {}
 
-    // List of common VPN providers and ASNs
+    // Expanded VPN providers list
     const vpnProviders = [
       'proton', 'nordvpn', 'expressvpn', 'surfshark', 'cyberghost', 'pia', 'private internet access',
       'mullvad', 'windscribe', 'purevpn', 'ipvanish', 'tor', 'hide my ass', 'hola', 'zenmate',
       'vyprvpn', 'tunnelbear', 'fastestvpn', 'astrill', 'avg vpn', 'avast', 'betternet', 'hotspot shield',
       'privatevpn', 'strongvpn', 'torguard', 'atlas vpn', 'privado', 'ivpn', 'ovpn', 'datacamp',
-      'cloudflare', 'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr'
-    ];
-    const vpnASNs = [
-      'AS209103', // Datacamp
-      'AS20473', // Vultr
-      'AS16509', // Amazon
-      'AS8075',  // Microsoft
-      'AS13335'  // Cloudflare
+      'cloudflare', 'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr',
+      'ivacy', 'namecheap', 'hidemyass', 'slickvpn', 'safervpn', 'airvpn', 'f-secure', 'bitdefender',
+      'kaspersky', 'mcafee', 'totalvpn', 'securevpn', 'norton'
     ];
 
-    // Validate country code (ISO 3166-1 alpha-2)
+    // Valid country codes for flag validation
     const validCountryCodes = [
       'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd',
       'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw', 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv',
@@ -225,18 +268,69 @@
       've', 'vn', 'vg', 'vi', 'wf', 'eh', 'ye', 'zm', 'zw'
     ];
 
-    // Fetch IP information with retry and fallback
-    async function fetchIPInfo(attempt = 1, maxAttempts = 4, usePrimaryAPI = true) {
+    // Initialize map state
+    let mapLoaded = false;
+    let map = null;
+    let defaultLat = 0;
+    let defaultLon = 0;
+    let realLat = null;
+    let realLon = null;
+    let ipMarker = null;
+    let realMarker = null;
+    let showingRealLocation = false;
+
+    // Fade in content and hide overlay
+    function fadeInContent() {
       try {
-        const apiUrl = usePrimaryAPI ? 'https://ipapi.co/json/' : 'http://ip-api.com/json/';
-        const response = await fetch(apiUrl);
+        const mainElement = document.querySelector('main');
+        const overlayElement = document.getElementById('loading-overlay');
+        if (mainElement) mainElement.classList.add('loaded');
+        if (overlayElement) {
+          overlayElement.classList.add('hidden');
+          setTimeout(() => {
+            overlayElement.style.display = 'none';
+          }, 500);
+        }
+      } catch (e) {}
+    }
+
+    // Show error and fade in
+    function showError(message) {
+      try {
+        const errorElement = document.getElementById('error');
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.classList.remove('hidden');
+        }
+        ['ipv4', 'ipv6', 'isp', 'city', 'region', 'zip', 'country', 'timezone', 'coordinates'].forEach(id => {
+          const element = document.getElementById(id);
+          if (element) element.innerHTML = 'Unknown';
+        });
+        const flagImg = document.getElementById('flag');
+        if (flagImg) {
+          flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
+          flagImg.alt = 'Unknown country';
+          flagImg.classList.remove('hidden');
+        }
+        if (!mapLoaded) loadMap(0, 0);
+        fadeInContent();
+      } catch (e) {}
+    }
+
+    // Fetch IP information with timeout and retry
+    async function fetchIPInfo(attempt = 1, maxAttempts = 3, usePrimaryAPI = true) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      try {
+        const apiUrl = usePrimaryAPI ? 'https://ipapi.co/json/' : 'https://ip-api.com/json/';
+        const response = await fetch(apiUrl, { signal: controller.signal });
         const data = await response.json();
 
         if (!response.ok || data.error || data.status === 'fail') {
           throw new Error(data.reason || data.message || 'Failed to fetch IP data');
         }
 
-        // Normalize data (ipapi.co vs ip-api.com)
+        // Normalize data
         const normalizedData = usePrimaryAPI ? data : {
           ip: data.query,
           org: data.isp || data.org,
@@ -253,242 +347,296 @@
           asn: data.as || ''
         };
 
-        // Fetch IPv6 and additional VPN info
+        // Fetch IPv6
         let ipv6 = null;
-        let vpnInfo = { vpn: false, proxy: false, hosting: false };
         try {
-          const ipifyResponse = await fetch('https://api64.ipify.org?format=json');
+          const ipifyResponse = await fetch('https://api64.ipify.org?format=json', { signal: controller.signal });
           const ipifyData = await ipifyResponse.json();
           if (ipifyData.ip.includes(':')) ipv6 = ipifyData.ip;
-        } catch (e) {
-          console.warn('Failed to fetch IPv6:', e);
-        }
-        try {
-          const ipinfoResponse = await fetch(`https://ipinfo.io/${normalizedData.ip}/json?token=free`);
-          const ipinfoData = await ipinfoResponse.json();
-          vpnInfo = {
-            vpn: ipinfoData.vpn || false,
-            proxy: ipinfoData.proxy || false,
-            hosting: ipinfoData.hosting || false
-          };
-        } catch (e) {
-          console.warn('Failed to fetch ipinfo.io data:', e);
-        }
+        } catch (e) {}
 
-        // Update DOM with IP info
+        // Update UI and load map
+        updateUI(normalizedData, ipv6);
+        if (!mapLoaded) loadMap(normalizedData.latitude, normalizedData.longitude);
+        fadeInContent();
+      } catch (error) {
+        if (attempt < maxAttempts) {
+          setTimeout(() => fetchIPInfo(attempt + 1, maxAttempts, usePrimaryAPI), 2000);
+        } else if (usePrimaryAPI) {
+          fetchIPInfo(1, maxAttempts, false);
+        } else {
+          showError(`Failed to fetch IP information after ${maxAttempts} attempts. Please check your connection or try again later.`);
+        }
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    // Update UI with IP data
+    function updateUI(data, ipv6) {
+      try {
         const updateField = (id, value) => {
           const element = document.getElementById(id);
           if (element) element.innerHTML = value || 'Unknown';
         };
 
-        // Handle IPv4 and IPv6
-        const isIPv6 = normalizedData.ip.includes(':');
-        const ipv4 = isIPv6 ? null : normalizedData.ip;
-        updateField('ipv4', ipv4 || 'Not available');
-        updateField('ipv6', ipv6 || (isIPv6 ? normalizedData.ip : 'Not available'));
+        const isIPv6 = data.ip.includes(':');
+        updateField('ipv4', isIPv6 ? 'Not available' : data.ip);
+        updateField('ipv6', ipv6 || (isIPv6 ? data.ip : 'Not available'));
+        updateField('isp', data.org);
+        updateField('city', data.city);
+        updateField('region', data.region);
+        updateField('zip', data.postal);
+        updateField('country', data.country_name);
+        updateField('timezone', data.timezone);
+        updateField('coordinates', data.latitude && data.longitude ? `${data.latitude}, ${data.longitude}` : 'Unknown');
 
-        updateField('isp', normalizedData.org);
-        updateField('city', normalizedData.city);
-        updateField('region', normalizedData.region);
-        updateField('zip', normalizedData.postal);
-        updateField('country', normalizedData.country_name);
-        updateField('timezone', normalizedData.timezone);
-        updateField('coordinates', normalizedData.latitude && normalizedData.longitude ? `${normalizedData.latitude}, ${normalizedData.longitude}` : 'Unknown');
-
-        // Display flag with validation
+        // Display flag
         const flagImg = document.getElementById('flag');
-        if (normalizedData.country_code && validCountryCodes.includes(normalizedData.country_code.toLowerCase())) {
-          flagImg.src = `https://flagcdn.com/24x18/${normalizedData.country_code.toLowerCase()}.png`;
-          flagImg.alt = `${normalizedData.country_name} flag`;
-          flagImg.classList.remove('hidden');
-        } else {
-          console.warn('Invalid or missing country code:', normalizedData.country_code);
-          flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
-          flagImg.alt = 'Unknown country';
+        if (flagImg) {
+          if (data.country_code && validCountryCodes.includes(data.country_code.toLowerCase())) {
+            flagImg.src = `https://flagcdn.com/24x18/${data.country_code.toLowerCase()}.png`;
+            flagImg.alt = `${data.country_name || 'Unknown'} flag`;
+          } else {
+            flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
+            flagImg.alt = 'Unknown country';
+          }
           flagImg.classList.remove('hidden');
         }
 
-        // Enhanced VPN/Tor detection
-        const orgLower = normalizedData.org?.toLowerCase() || '';
+        // VPN/Tor detection
+        const orgLower = data.org?.toLowerCase() || '';
         const isTorUserAgent = /TorBrowser|Tor\/[\d.]+/.test(userAgent);
         const detectedProvider = vpnProviders.find(provider => orgLower.includes(provider));
         const isTor = isTorUserAgent || orgLower.includes('tor') || detectedProvider === 'tor';
-        const isASNMatch = vpnASNs.some(asn => normalizedData.asn?.includes(asn));
-        const vpnIndicators = [
-          normalizedData.proxy,
-          normalizedData.hosting,
-          vpnInfo.vpn,
-          vpnInfo.proxy,
-          vpnInfo.hosting,
-          detectedProvider,
-          orgLower.includes('vpn'),
-          isTor,
-          isASNMatch
-        ].filter(Boolean).length;
-        const isVPN = vpnIndicators >= 1;
-        console.log('VPN/Tor Detection Details:', {
-          proxy: normalizedData.proxy,
-          hosting: normalizedData.hosting,
-          vpnInfo,
-          org: normalizedData.org,
-          detectedProvider,
-          isTorUserAgent,
-          isTor,
-          isASNMatch,
-          vpnIndicators,
-          isVPN
-        });
-        const torVpnElement = document.getElementById('tor-vpn');
-        const vpnNoteElement = document.getElementById('vpn-note');
-        const vpnProviderElement = document.getElementById('vpn-provider');
+        const isVPN = data.proxy || data.hosting || detectedProvider || isTor;
         if (isVPN) {
-          torVpnElement.classList.remove('hidden');
-          vpnNoteElement.classList.remove('hidden');
-          vpnProviderElement.textContent = isTor ? 'Tor' : (detectedProvider ? `${detectedProvider.charAt(0).toUpperCase() + detectedProvider.slice(1)}` : 'Possible VPN/Tor');
+          const torVpnElement = document.getElementById('tor-vpn');
+          const vpnNoteElement = document.getElementById('vpn-note');
+          const vpnProviderElement = document.getElementById('vpn-provider');
+          if (torVpnElement) torVpnElement.classList.remove('hidden');
+          if (vpnNoteElement) vpnNoteElement.classList.remove('hidden');
+          if (vpnProviderElement) {
+            vpnProviderElement.textContent = isTor ? 'Tor' : (detectedProvider ? detectedProvider.charAt(0).toUpperCase() + detectedProvider.slice(1) : 'VPN/Tor');
+          }
         } else {
-          torVpnElement.innerHTML = '<strong>✅ No VPN/Tor detected</strong>';
-          torVpnElement.classList.remove('hidden');
+          const torVpnElement = document.getElementById('tor-vpn');
+          if (torVpnElement) {
+            torVpnElement.innerHTML = '<strong>✅ No VPN/Tor detected</strong>';
+            torVpnElement.classList.remove('hidden');
+          }
         }
 
-        // Update map with IP-based location
-        defaultLat = normalizedData.latitude || 0;
-        defaultLon = normalizedData.longitude || 0;
-        if (ipMarker) map.removeLayer(ipMarker);
-        ipMarker = L.marker([defaultLat, defaultLon], { 
-          icon: L.icon({ 
-            iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png', 
-            iconSize: [25, 41], 
-            iconAnchor: [12, 41] 
-          }) 
-        }).addTo(map).bindTooltip("VPN/Tor/ISP Location");
-        map.setView([defaultLat, defaultLon], 13);
-      } catch (error) {
-        console.error('Fetch error:', error);
-        if (attempt < maxAttempts) {
-          console.warn(`Attempt ${attempt} failed: ${error.message}. Retrying${usePrimaryAPI ? ' with primary API' : ' with fallback API'}...`);
-          setTimeout(() => fetchIPInfo(attempt + 1, maxAttempts, usePrimaryAPI), 3000);
-        } else if (usePrimaryAPI) {
-          console.warn('Primary API failed. Trying fallback API...');
-          fetchIPInfo(1, maxAttempts, false);
-        } else {
-          const errorElement = document.getElementById('error');
-          if (errorElement) {
-            errorElement.textContent = `Failed to fetch IP information after ${maxAttempts} attempts. Please check your connection or try again later.`;
-            errorElement.classList.remove('hidden');
-          }
-          ['ipv4', 'ipv6', 'isp', 'city', 'region', 'zip', 'country', 'timezone', 'coordinates'].forEach(id => {
-            const element = document.getElementById(id);
-            if (element) element.innerHTML = 'Unknown';
-          });
-          const flagImg = document.getElementById('flag');
-          if (flagImg) {
-            flagImg.src = 'https://img.icons8.com/emoji/24/globe.png';
-            flagImg.alt = 'Unknown country';
-            flagImg.classList.remove('hidden');
-          }
-        }
+        // Store coordinates
+        defaultLat = data.latitude || 0;
+        defaultLon = data.longitude || 0;
+      } catch (e) {
+        showError('Failed to update IP information.');
       }
     }
 
-    // Fetch IP info on load
-    fetchIPInfo();
-
-    // Check geolocation availability
-    const locateButton = document.getElementById('locate');
-    const toggleButton = document.getElementById('toggle-map');
-    if (!navigator.geolocation) {
-      locateButton.disabled = true;
-      locateButton.title = 'Geolocation not supported by your browser';
-      toggleButton.disabled = true;
-      toggleButton.title = 'Geolocation not supported by your browser';
+    // Lazy-load Leaflet and initialize map
+    function loadMap(lat, lon) {
+      if (mapLoaded) return;
+      mapLoaded = true;
+      try {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.async = true;
+        script.onload = () => {
+          try {
+            const mapElement = document.getElementById('map');
+            if (mapElement) {
+              mapElement.classList.remove('loading');
+              map = L.map('map', { zoomControl: true }).setView([lat || 0, lon || 0], 13);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18,
+              }).addTo(map);
+              ipMarker = L.marker([lat || 0, lon || 0], {
+                icon: L.icon({
+                  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41]
+                })
+              }).addTo(map).bindTooltip('VPN/Tor/ISP Location').openTooltip();
+              mapElement.style.zIndex = '1';
+            }
+          } catch (e) {
+            if (document.getElementById('map')) {
+              document.getElementById('map').textContent = 'Failed to load map.';
+              document.getElementById('map').classList.remove('loading');
+            }
+          }
+        };
+        script.onerror = () => {
+          if (document.getElementById('map')) {
+            document.getElementById('map').textContent = 'Failed to load map.';
+            document.getElementById('map').classList.remove('loading');
+          }
+        };
+        document.body.appendChild(script);
+      } catch (e) {}
     }
 
-    // Attempt to get real location on page load
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          realLat = pos.coords.latitude;
-          realLon = pos.coords.longitude;
-          if (realMarker) map.removeLayer(realMarker);
-          realMarker = L.marker([realLat, realLon], { 
-            icon: L.icon({ 
-              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
-              iconSize: [25, 41], 
-              iconAnchor: [12, 41] 
-            }) 
-          }).addTo(map).bindTooltip("Real Location").openPopup();
-          map.setView([realLat, realLon], 13);
-          toggleButton.disabled = false;
-          toggleButton.title = 'Toggle between VPN/Tor and real location views';
-        },
-        err => {
-          console.warn("Geolocation error: " + err.message);
-          locateButton.title = 'Geolocation permission denied or unavailable';
-          toggleButton.title = 'Geolocation permission denied or unavailable';
-        },
-        { timeout: 8000, maximumAge: 60000 }
-      );
+    // WebRTC Leak Detection
+    try {
+      const webrtcButton = document.getElementById('check-webrtc');
+      if (webrtcButton) {
+        webrtcButton.addEventListener('click', async () => {
+          try {
+            const resultElement = document.getElementById('webrtc-result');
+            if (resultElement) {
+              resultElement.textContent = 'Checking WebRTC leaks...';
+              resultElement.classList.remove('hidden', 'text-red-600', 'text-green-600');
+              const ip = await checkWebRTCLeak();
+              resultElement.textContent = ip ? `⚠️ WebRTC Leak Detected: ${ip}` : '✅ No WebRTC leaks detected.';
+              resultElement.classList.add(ip ? 'text-red-600' : 'text-green-600');
+            }
+          } catch (e) {}
+        });
+      }
+    } catch (e) {}
+
+    async function checkWebRTCLeak() {
+      return new Promise((resolve) => {
+        try {
+          const rtc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+          rtc.createDataChannel('');
+          rtc.createOffer().then(offer => rtc.setLocalDescription(offer)).catch(() => resolve(null));
+          rtc.onicecandidate = (event) => {
+            if (event.candidate) {
+              const ip = event.candidate.candidate.split(' ')[4];
+              if (ip && ip !== '127.0.0.1' && ip !== '::1') resolve(ip);
+            }
+          };
+          setTimeout(() => resolve(null), 1000);
+        } catch (e) {
+          resolve(null);
+        }
+      });
     }
 
-    // Refresh real location on button click
-    locateButton.addEventListener('click', () => {
-      if (navigator.geolocation) {
-        locateButton.disabled = true;
-        locateButton.innerHTML = '<span class="spinner"></span> Fetching...';
+    // Geolocation handling
+    try {
+      const locateButton = document.getElementById('locate');
+      const toggleButton = document.getElementById('toggle-location');
+      if (!navigator.geolocation) {
+        if (locateButton) {
+          locateButton.disabled = true;
+          locateButton.title = 'Geolocation not supported by your browser';
+        }
+        if (toggleButton) {
+          toggleButton.disabled = true;
+          toggleButton.title = 'Show Real Location';
+        }
+      } else {
         navigator.geolocation.getCurrentPosition(
           pos => {
             realLat = pos.coords.latitude;
             realLon = pos.coords.longitude;
-            if (realMarker) map.removeLayer(realMarker);
-            realMarker = L.marker([realLat, realLon], { 
-              icon: L.icon({ 
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
-                iconSize: [25, 41], 
-                iconAnchor: [12, 41] 
-              }) 
-            }).addTo(map).bindTooltip("Real Location").openPopup();
-            map.setView([realLat, realLon], 13);
-            toggleButton.disabled = false;
-            toggleButton.title = 'Toggle between VPN/Tor and real location views';
-            locateButton.disabled = false;
-            locateButton.innerHTML = '📍 Refresh Real Location';
+            if (map && realMarker) map.removeLayer(realMarker);
+            if (map) {
+              realMarker = L.marker([realLat, realLon], {
+                icon: L.icon({
+                  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41]
+                })
+              }).addTo(map).bindTooltip('Real Location').openTooltip();
+              map.setView([defaultLat, defaultLon], 13);
+              if (ipMarker) ipMarker.openTooltip();
+              if (toggleButton) {
+                toggleButton.disabled = false;
+                toggleButton.title = 'Show Real Location';
+              }
+            }
           },
-          err => {
-            alert(`Geolocation error: ${err.message}. Please enable location access in your browser settings and ensure GPS/Wi-Fi is available.`);
-            locateButton.disabled = false;
-            locateButton.title = 'Retry after enabling geolocation';
-            locateButton.innerHTML = '📍 Refresh Real Location';
-          },
+          () => {},
           { timeout: 8000, maximumAge: 60000 }
         );
-      } else {
-        alert('Geolocation is not supported by your browser.');
-        locateButton.disabled = false;
-        locateButton.innerHTML = '📍 Refresh Real Location';
       }
-    });
 
-    // Toggle map view between ISP/VPN/Tor and real location
-    let showingRealLocation = false;
-    toggleButton.addEventListener('click', () => {
-      if (!realLat || !realLon) {
-        alert('Real location unavailable. Please use "Refresh Real Location" and allow geolocation.');
-        return;
+      // Refresh real location
+      if (locateButton) {
+        locateButton.addEventListener('click', () => {
+          if (navigator.geolocation) {
+            locateButton.disabled = true;
+            locateButton.innerHTML = '<span class="pulse-loader"><span></span><span></span><span></span></span> Fetching...';
+            navigator.geolocation.getCurrentPosition(
+              pos => {
+                realLat = pos.coords.latitude;
+                realLon = pos.coords.longitude;
+                if (map && realMarker) map.removeLayer(realMarker);
+                if (map) {
+                  realMarker = L.marker([realLat, realLon], {
+                    icon: L.icon({
+                      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                      iconSize: [25, 41],
+                      iconAnchor: [12, 41]
+                    })
+                  }).addTo(map).bindTooltip('Real Location').openTooltip();
+                }
+                if (showingRealLocation) {
+                  map.setView([realLat, realLon], 13);
+                  if (realMarker) realMarker.openTooltip();
+                } else {
+                  map.setView([defaultLat, defaultLon], 13);
+                  if (ipMarker) ipMarker.openTooltip();
+                }
+                if (toggleButton) {
+                  toggleButton.disabled = false;
+                  toggleButton.title = showingRealLocation ? 'Show VPN/Tor Location' : 'Show Real Location';
+                }
+                locateButton.disabled = false;
+                locateButton.innerHTML = '📍 Refresh Real Location';
+              },
+              err => {
+                alert(`Geolocation error: ${err.message}. Please enable location access.`);
+                locateButton.disabled = false;
+                locateButton.innerHTML = '📍 Refresh Real Location';
+              },
+              { timeout: 8000, maximumAge: 60000 }
+            );
+          } else {
+            alert('Geolocation not supported by your browser.');
+            locateButton.disabled = false;
+            locateButton.innerHTML = '📍 Refresh Real Location';
+          }
+        });
       }
-      if (showingRealLocation) {
-        if (defaultLat && defaultLon) {
-          map.setView([defaultLat, defaultLon], 13);
-          if (ipMarker) ipMarker.openPopup();
-          showingRealLocation = false;
-          toggleButton.textContent = 'Toggle to Real Location';
+
+      // Toggle location
+      if (toggleButton) {
+        toggleButton.addEventListener('click', () => {
+          if (!realLat || !realLon) {
+            showError('Real location unavailable. Please use "Refresh Real Location" first.');
+            return;
+          }
+          if (showingRealLocation) {
+            map.setView([defaultLat, defaultLon], 13);
+            if (ipMarker) ipMarker.openTooltip();
+            showingRealLocation = false;
+            toggleButton.title = 'Show Real Location';
+          } else {
+            map.setView([realLat, realLon], 13);
+            if (realMarker) realMarker.openTooltip();
+            showingRealLocation = true;
+            toggleButton.title = 'Show VPN/Tor Location';
+          }
+        });
+      }
+    } catch (e) {}
+
+    // Start fetching IP info
+    try {
+      setTimeout(() => {
+        if (!document.querySelector('main').classList.contains('loaded')) {
+          showError('Failed to load IP information. Please try again later.');
         }
-      } else {
-        map.setView([realLat, realLon], 13);
-        if (realMarker) realMarker.openPopup();
-        showingRealLocation = true;
-        toggleButton.textContent = 'Toggle to VPN/Tor Location';
-      }
-    });
+      }, 5000);
+      fetchIPInfo();
+    } catch (e) {}
   </script>
 </body>
 </html>
