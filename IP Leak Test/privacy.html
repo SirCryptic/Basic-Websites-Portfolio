@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Privacy Notice for the Free Open Source IP Leak Test, explaining data collection and usage." />
-  <meta name="keywords" content="privacy policy, IP geolocation, data collection, open source" />
+  <meta name="keywords" content="privacy policy, IP geolocation, WebRTC, data collection, open source" />
   <meta name="author" content="sircryptic" />
   <meta property="og:title" content="Privacy Notice - Free Open Source IP Leak Test" />
   <meta property="og:description" content="Learn how the Free Open Source IP Leak Test handles your data." />
   <meta property="og:image" content="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
-  <meta property="og:url" content="https://sircryptic.github.io/ip-geolocation/privacy.html" />
+  <meta property="og:url" content="https://sircryptic.github.io/Basic-Websites-Portfolio/IP%20Leak%20Test/privacy.html" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Privacy Notice - Free Open Source IP Leak Test" />
@@ -128,7 +128,6 @@
 <body class="font-sans text-gray-800">
   <div id="loading-overlay">
     <div class="loading-text">
-      
       <span class="pulse-loader"><span></span><span></span><span></span></span>
     </div>
   </div>
@@ -138,37 +137,38 @@
         🔒 Privacy Notice
       </h1>
       <div class="space-y-4 text-base sm:text-lg leading-relaxed">
-        <p>This Privacy Notice explains how the Free Open Source IP Leak Test, collects and uses your data.</p>
+        <p>This Privacy Notice explains how the Free Open Source IP Leak Test handles your data.</p>
         
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Data Collection</h2>
-        <p>The tool collects the following information to provide geolocation services:</p>
+        <p>The tool collects the following to provide geolocation and leak testing:</p>
         <ul class="list-disc pl-5">
-          <li><strong>IP Address</strong>: Used to fetch location details (e.g., city, country) via third-party APIs (<a href="https://ipapi.co" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ipapi.co</a> and <a href="http://ip-api.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ip-api.com</a>).</li>
-          <li><strong>User Agent</strong>: Displayed to identify your browser and device type.</li>
-          <li><strong>Geolocation</strong>: If you enable browser geolocation, your device's coordinates are used to show your real-time location on the map.</li>
+          <li><strong>IP Address</strong>: Used to fetch location details (e.g., city, country) via third-party APIs (<a href="https://ipapi.co" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ipapi.co</a>, <a href="http://ip-api.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ip-api.com</a>).</li>
+          <li><strong>User Agent</strong>: Identifies your browser and device type.</li>
+          <li><strong>WebRTC Data</strong>: Checks for IP or device name (mDNS) leaks via WebRTC, if enabled.</li>
+          <li><strong>Geolocation</strong>: Uses device coordinates for real-time location on the map, if you enable it.</li>
         </ul>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Data Usage</h2>
-        <p>Your data is used solely to:</p>
+        <p>Your data is used only to:</p>
         <ul class="list-disc pl-5">
           <li>Display IP-based location, ISP, and VPN/Tor status.</li>
-          <li>Show your real-time location on the map (if enabled).</li>
-          <li>Detect VPN or Tor usage based on ISP or API flags.</li>
+          <li>Detect WebRTC leaks (IP or mDNS identifiers).</li>
+          <li>Show real-time location on the map, if enabled.</li>
         </ul>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Data Storage</h2>
-        <p>No data is stored or retained by this website. All processing occurs in your browser, and API requests are made directly to third-party services.</p>
+        <p>No data is stored. All processing is client-side, with API requests sent directly to third-party services.</p>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Third-Party Services</h2>
-        <p>The tool uses the following services:</p>
+        <p>The tool uses:</p>
         <ul class="list-disc pl-5">
-          <li><strong>ip-api</strong> (<a href="https://ipapi.co" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ipapi.co</a> and <a href="http://ip-api.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ip-api.com</a>): For IP geolocation data. Please review their respective privacy policies for details.</li>
+          <li><strong>ipapi.co</strong> and <strong>ip-api.com</strong> (<a href="https://ipapi.co" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ipapi.co</a>, <a href="http://ip-api.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ip-api.com</a>): For IP geolocation. Review their privacy policies.</li>
           <li><strong>FlagCDN</strong> (<a href="https://flagcdn.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">flagcdn.com</a>): For country flag images.</li>
-          <li><strong>OpenStreetMap</strong> (<a href="https://www.openstreetmap.org" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">OpenStreetMap</a>) via Leaflet: For map rendering.</li>
+          <li><strong>OpenStreetMap</strong> (<a href="https://www.openstreetmap.org" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">OpenStreetMap</a>) via Leaflet: For maps.</li>
         </ul>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Contact</h2>
-        <p>For any further questions or concerns, contact me via <a href="https://github.com/sircryptic" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">GitHub</a>.</p>
+        <p>For questions, contact me via <a href="https://github.com/sircryptic" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">GitHub</a>.</p>
 
         <p class="text-sm text-gray-500">Last updated: May 27, 2025</p>
       </div>
@@ -196,7 +196,7 @@
           overlayElement.classList.add('hidden');
           setTimeout(() => {
             overlayElement.style.display = 'none';
-          }, 500); // Match transition duration
+          }, 500);
         }
       } catch (e) {}
     }
@@ -207,8 +207,7 @@
         if (!document.querySelector('main').classList.contains('loaded')) {
           fadeInContent();
         }
-      }, 5000); // 5-second timeout
-      // Simulate load delay (e.g., 1 second) for smoother UX
+      }, 5000);
       setTimeout(fadeInContent, 1000);
     } catch (e) {}
   </script>
