@@ -149,7 +149,10 @@
       </div>
 
       <div id="map"></div>
-      <p class="map-note">Blue marker: IP-based location (may reflect VPN/Tor). Green marker: Your real location (requires geolocation).</p>
+      <p class="map-note">Blue marker: IP-based location (may reflect VPN/Tor or even your ISP Location).</p>
+      <p class="map-note">Green marker: Shows your actual location if you allow browser/device geolocation.</p>
+      <p class="text-sm text-gray-500">Note: This tool is free and open source. It does not store or share your IP address or location data.</p>
+      <p class="text-sm text-gray-500">For more information, check the <a href="privacy.html" class="underline">Privacy Notice</a>.</p>
     </div>
   </main>
 
@@ -188,53 +191,39 @@
     const userAgentElement = document.getElementById('user-agent');
     if (userAgentElement) userAgentElement.textContent = userAgent || 'Unknown';
 
-    // List of common VPN providers
+    // List of common VPN providers and ASNs
     const vpnProviders = [
       'proton', 'nordvpn', 'expressvpn', 'surfshark', 'cyberghost', 'pia', 'private internet access',
       'mullvad', 'windscribe', 'purevpn', 'ipvanish', 'tor', 'hide my ass', 'hola', 'zenmate',
-      'vyprvpn', 'tunnelbear', 'pass', 'astrill', 'avg vpn', 'avast', 'datacamp', 'hotspot shield',
-      'anonymous', 'privado', 'private', 'strongvpn', 'privatevpn', 'torguard', 'atlas vpn', 'ovpn', 'vpn'
+      'vyprvpn', 'tunnelbear', 'fastestvpn', 'astrill', 'avg vpn', 'avast', 'betternet', 'hotspot shield',
+      'privatevpn', 'strongvpn', 'torguard', 'atlas vpn', 'privado', 'ivpn', 'ovpn', 'datacamp',
+      'cloudflare', 'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr'
+    ];
+    const vpnASNs = [
+      'AS209103', // Datacamp
+      'AS20473', // Vultr
+      'AS16509', // Amazon
+      'AS8075',  // Microsoft
+      'AS13335'  // Cloudflare
     ];
 
     // Validate country code (ISO 3166-1 alpha-2)
     const validCountryCodes = [
-      'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd', 'at', 'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw',
- 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv', 'kh', 'cm', 'ca', 'ky', 'cf', 'td', 'cl', 
- 'cn', 'cx', 'cc', 'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr', 'cu', 'cw', 'cy', 
- 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 
- 'fo', 'fj', 'fi', 'fr', 'gf', 'pf', 'tf', 'ga', 'gm', 'ge', 'de', 'gh', 'gi', 'gr', 
- 'gl', 'gd', 'gp', 'gu', 'gt', 'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'hk', 'hu', 'is', 
- 'in', 'id', 'ir', 'iq', 'ie', 'im', 'il', 'it', 'jm', 'jp', 'je', 'jo', 'kz', 'ke', 
- 'ki', 'kp', 'kr', 'kw', 'kg', 'la', 'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt', 'lu', 
- 'mo', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mq', 'mr', 'mu', 'yt', 'mx', 'fm', 
- 'md', 'mc', 'mn', 'me', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nc', 'nz', 
- 'ni', 'ne', 'ng', 'nu', 'nf', 'mp', 'no', 'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 
- 'pe', 'ph', 'pn', 'pl', 'pt', 'pr', 'qa', 're', 'ro', 'ru', 'rw', 'bl', 'sh', 'kn', 
- 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sx', 
- 'sk', 'si', 'sb', 'so', 'za', 'ss', 'es', 'lk', 'sd', 'sr', 'sj', 'se', 'ch', 'sy', 
- 'tw', 'tj', 'tz', 'th', 'tl', 'tg', 'tk', 'to', 'tt', 'tn', 'tr', 'tm', 'tc', 'tv', 
- 'ug', 'ua', 'ae', 'gb', 'us', 'um', 'uy', 'uz', 'vu', 've', 'vn', 'vg', 'vi', 'wf', 
- 'eh', 'ye', 'zm', 'zw'
+      'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd',
+      'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw', 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv',
+      'kh', 'cm', 'ca', 'ky', 'cf', 'td', 'cl', 'cn', 'cx', 'cc', 'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr',
+      'cu', 'cw', 'cy', 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 'fo',
+      'fj', 'fi', 'fr', 'gf', 'pf', 'tf', 'ga', 'gm', 'ge', 'de', 'gh', 'gi', 'gr', 'gl', 'gd', 'gp', 'gu', 'gt',
+      'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'hk', 'hu', 'is', 'in', 'id', 'ir', 'iq', 'ie', 'im', 'il', 'it', 'jm',
+      'jp', 'je', 'jo', 'kz', 'ke', 'ki', 'kp', 'kr', 'kw', 'kg', 'la', 'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt',
+      'lu', 'mo', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mq', 'mr', 'mu', 'yt', 'mx', 'fm', 'md', 'mc', 'mn',
+      'me', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nc', 'nz', 'ni', 'ne', 'ng', 'nu', 'nf', 'mp', 'no',
+      'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 'pe', 'ph', 'pn', 'pl', 'pt', 'pr', 'qa', 're', 'ro', 'ru', 'rw',
+      'bl', 'sh', 'kn', 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sx', 'sk',
+      'si', 'sb', 'so', 'za', 'ss', 'es', 'lk', 'sd', 'sr', 'sj', 'se', 'ch', 'sy', 'tw', 'tj', 'tz', 'th', 'tl',
+      'tg', 'tk', 'to', 'tt', 'tn', 'tr', 'tm', 'tc', 'tv', 'ug', 'ua', 'ae', 'gb', 'us', 'um', 'uy', 'uz', 'vu',
+      've', 'vn', 'vg', 'vi', 'wf', 'eh', 'ye', 'zm', 'zw'
     ];
-
-    // IP conversion functions
-    function ipv4ToIpv6(ipv4) {
-      if (!ipv4 || !/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(ipv4)) return null;
-      const parts = ipv4.split('.').map(n => parseInt(n));
-      const hex = parts.map(n => n.toString(16).padStart(2, '0')).join('');
-      return `::ffff:${hex.slice(0, 4)}:${hex.slice(4)}`;
-    }
-
-    function ipv6ToIpv4(ipv6) {
-      if (!ipv6 || !ipv6.startsWith('::ffff:')) return null;
-      const hex = ipv6.replace('::ffff:', '').replace(/:/g, '');
-      if (hex.length !== 8) return null;
-      const parts = [];
-      for (let i = 0; i < 8; i += 2) {
-        parts.push(parseInt(hex.slice(i, i + 2), 16));
-      }
-      return parts.join('.');
-    }
 
     // Fetch IP information with retry and fallback
     async function fetchIPInfo(attempt = 1, maxAttempts = 4, usePrimaryAPI = true) {
@@ -260,17 +249,30 @@
           latitude: data.lat,
           longitude: data.lon,
           proxy: false,
-          hosting: data.isp?.toLowerCase().includes('hosting') || data.org?.toLowerCase().includes('hosting') || false
+          hosting: data.isp?.toLowerCase().includes('hosting') || data.org?.toLowerCase().includes('hosting') || false,
+          asn: data.as || ''
         };
 
-        // Fetch IPv6 separately if needed
+        // Fetch IPv6 and additional VPN info
         let ipv6 = null;
+        let vpnInfo = { vpn: false, proxy: false, hosting: false };
         try {
           const ipifyResponse = await fetch('https://api64.ipify.org?format=json');
           const ipifyData = await ipifyResponse.json();
           if (ipifyData.ip.includes(':')) ipv6 = ipifyData.ip;
         } catch (e) {
           console.warn('Failed to fetch IPv6:', e);
+        }
+        try {
+          const ipinfoResponse = await fetch(`https://ipinfo.io/${normalizedData.ip}/json?token=free`);
+          const ipinfoData = await ipinfoResponse.json();
+          vpnInfo = {
+            vpn: ipinfoData.vpn || false,
+            proxy: ipinfoData.proxy || false,
+            hosting: ipinfoData.hosting || false
+          };
+        } catch (e) {
+          console.warn('Failed to fetch ipinfo.io data:', e);
         }
 
         // Update DOM with IP info
@@ -281,11 +283,9 @@
 
         // Handle IPv4 and IPv6
         const isIPv6 = normalizedData.ip.includes(':');
-        const ipv4 = isIPv6 ? ipv6ToIpv4(normalizedData.ip) : normalizedData.ip;
-        const ipv6Converted = isIPv6 ? normalizedData.ip : ipv4ToIpv6(normalizedData.ip);
-        const ipv6Final = ipv6 || ipv6Converted || 'Not available';
-        updateField('ipv4', ipv4 ? `${ipv4}${ipv6Converted ? ` (IPv6: ${ipv6Converted})` : ''}` : 'Not available');
-        updateField('ipv6', ipv6Final !== 'Not available' ? `${ipv6Final}${ipv4 ? ` (IPv4: ${ipv4})` : ''}` : 'Not available');
+        const ipv4 = isIPv6 ? null : normalizedData.ip;
+        updateField('ipv4', ipv4 || 'Not available');
+        updateField('ipv6', ipv6 || (isIPv6 ? normalizedData.ip : 'Not available'));
 
         updateField('isp', normalizedData.org);
         updateField('city', normalizedData.city);
@@ -308,26 +308,33 @@
           flagImg.classList.remove('hidden');
         }
 
-        // Tor and VPN detection
+        // Enhanced VPN/Tor detection
         const orgLower = normalizedData.org?.toLowerCase() || '';
         const isTorUserAgent = /TorBrowser|Tor\/[\d.]+/.test(userAgent);
         const detectedProvider = vpnProviders.find(provider => orgLower.includes(provider));
         const isTor = isTorUserAgent || orgLower.includes('tor') || detectedProvider === 'tor';
+        const isASNMatch = vpnASNs.some(asn => normalizedData.asn?.includes(asn));
         const vpnIndicators = [
           normalizedData.proxy,
           normalizedData.hosting,
+          vpnInfo.vpn,
+          vpnInfo.proxy,
+          vpnInfo.hosting,
           detectedProvider,
           orgLower.includes('vpn'),
-          isTor
+          isTor,
+          isASNMatch
         ].filter(Boolean).length;
         const isVPN = vpnIndicators >= 1;
         console.log('VPN/Tor Detection Details:', {
           proxy: normalizedData.proxy,
           hosting: normalizedData.hosting,
+          vpnInfo,
           org: normalizedData.org,
           detectedProvider,
           isTorUserAgent,
           isTor,
+          isASNMatch,
           vpnIndicators,
           isVPN
         });
@@ -353,7 +360,7 @@
             iconSize: [25, 41], 
             iconAnchor: [12, 41] 
           }) 
-        }).addTo(map).bindTooltip("VPN/Tor Location");
+        }).addTo(map).bindTooltip("VPN/Tor/ISP Location");
         map.setView([defaultLat, defaultLon], 13);
       } catch (error) {
         console.error('Fetch error:', error);
@@ -461,6 +468,7 @@
       }
     });
 
+    // Toggle map view between ISP/VPN/Tor and real location
     let showingRealLocation = false;
     toggleButton.addEventListener('click', () => {
       if (!realLat || !realLon) {
