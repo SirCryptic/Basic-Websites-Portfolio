@@ -4,7 +4,7 @@ A free open-source web page to check your IP address, location, ISP, and VPN sta
 
 ## Features
 - Displays IP, ISP, city, region, country, and coordinates.
-- Detects VPNs (e.g., Datacamp Limited, ProtonVPN).
+- Detects VPNs (ProtonVPN + Many More).
 - Interactive map.
 
 ## Privacy
