@@ -3,34 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Privacy Notice for the Free Open Source IP Leak Test by sircryptic, explaining data collection and usage." />
+  <meta name="description" content="Privacy Notice for the Free Open Source IP Leak Test, explaining data collection and usage." />
   <meta name="keywords" content="privacy policy, IP geolocation, data collection, open source" />
   <meta name="author" content="sircryptic" />
-  <title>Privacy Notice - IP Geolocation</title>
+  <meta property="og:title" content="Privacy Notice - Free Open Source IP Leak Test" />
+  <meta property="og:description" content="Learn how the Free Open Source IP Leak Test handles your data." />
+  <meta property="og:image" content="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
+  <meta property="og:url" content="https://sircryptic.github.io/ip-geolocation/privacy.html" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Privacy Notice - Free Open Source IP Leak Test" />
+  <meta name="twitter:description" content="Learn how the Free Open Source IP Leak Test handles your data." />
+  <meta name="twitter:image" content="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
+  <title>Privacy Notice - IP Leak Test</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/48/globe.png" />
+  <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=j2D-17SBxXAJ&format=png&color=000000" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
       min-height: 100vh;
       font-family: 'Inter', sans-serif;
+      margin: 0;
     }
     .container {
       max-width: 48rem;
       margin: 0 auto;
       padding: 1rem;
     }
+    main {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    main.loaded {
+      opacity: 1;
+    }
     .card {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      transform: translateY(0);
+      border-radius: 1rem;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
       transform: translateY(-4px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .btn-primary {
+      background-color: #2563eb;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      transform: scale(1.05);
+    }
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    #loading-overlay.hidden {
+      opacity: 0;
+    }
+    #loading-overlay .loading-text {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pulse-loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pulse-loader span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #2563eb;
+      border-radius: 50%;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    .pulse-loader span:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+    .pulse-loader span:nth-child(3) {
+      animation-delay: 0.8s;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.7; }
     }
     footer {
       display: flex;
@@ -46,61 +120,57 @@
       flex-grow: 1;
       text-align: center;
     }
-    footer a {
-      transition: opacity 0.3s ease;
-    }
     footer a:hover {
       opacity: 0.8;
     }
   </style>
 </head>
 <body class="font-sans text-gray-800">
+  <div id="loading-overlay">
+    <div class="loading-text">
+      
+      <span class="pulse-loader"><span></span><span></span><span></span></span>
+    </div>
+  </div>
   <main class="container py-6 sm:py-12">
-    <div class="card rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6">
+    <div class="card p-6 sm:p-8 space-y-6">
       <h1 class="text-2xl sm:text-3xl font-bold text-indigo-700 flex items-center gap-2">
         🔒 Privacy Notice
       </h1>
       <div class="space-y-4 text-base sm:text-lg leading-relaxed">
-        <p>This Privacy Notice explains how the Free Open Source IP Leak Test, developed by sircryptic, collects and uses your data.</p>
+        <p>This Privacy Notice explains how the Free Open Source IP Leak Test, collects and uses your data.</p>
         
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Data Collection</h2>
         <p>The tool collects the following information to provide geolocation services:</p>
         <ul class="list-disc pl-5">
-          <li><strong>IP Address</strong>: Used to fetch location details (e.g., city, country) via third-party APIs (`ipapi.co` and `ip-api.com`).</li>
+          <li><strong>IP Address</strong>: Used to fetch location details (e.g., city, country) via third-party APIs (<a href="https://ipapi.co" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ipapi.co</a> and <a href="http://ip-api.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ip-api.com</a>).</li>
           <li><strong>User Agent</strong>: Displayed to identify your browser and device type.</li>
-          <li><strong>Geolocation</strong>: If you enable browser geolocation, your device's coordinates are used to show your real location on the map.</li>
+          <li><strong>Geolocation</strong>: If you enable browser geolocation, your device's coordinates are used to show your real-time location on the map.</li>
         </ul>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Data Usage</h2>
         <p>Your data is used solely to:</p>
         <ul class="list-disc pl-5">
-          <li>Display IP-based location, ISP, and VPN status.</li>
-          <li>Show your real location on the map (with permission).</li>
+          <li>Display IP-based location, ISP, and VPN/Tor status.</li>
+          <li>Show your real-time location on the map (if enabled).</li>
           <li>Detect VPN or Tor usage based on ISP or API flags.</li>
         </ul>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Data Storage</h2>
-        <p>No data is stored or retained by the website. All processing occurs in your browser, and API requests are made directly to third-party services.</p>
+        <p>No data is stored or retained by this website. All processing occurs in your browser, and API requests are made directly to third-party services.</p>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Third-Party Services</h2>
-        <p>The tool uses:</p>
+        <p>The tool uses the following services:</p>
         <ul class="list-disc pl-5">
-          <li><strong>ipapi.co</strong> and <strong>ip-api.com</strong> for IP geolocation data. See their privacy policies for details.</li>
-          <li><strong>flagcdn.com</strong> for country flag images.</li>
-          <li><strong>OpenStreetMap</strong> via Leaflet for map rendering.</li>
-        </ul>
-
-        <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Your Choices</h2>
-        <p>You can:</p>
-        <ul class="list-disc pl-5">
-          <li>Disable browser geolocation to avoid sharing your real location.</li>
-          <li>Disable JavaScript to prevent IP data collection (note: this will disable the tool's functionality).</li>
+          <li><strong>ip-api</strong> (<a href="https://ipapi.co" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ipapi.co</a> and <a href="http://ip-api.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">ip-api.com</a>): For IP geolocation data. Please review their respective privacy policies for details.</li>
+          <li><strong>FlagCDN</strong> (<a href="https://flagcdn.com" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">flagcdn.com</a>): For country flag images.</li>
+          <li><strong>OpenStreetMap</strong> (<a href="https://www.openstreetmap.org" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">OpenStreetMap</a>) via Leaflet: For map rendering.</li>
         </ul>
 
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600">Contact</h2>
-        <p>For questions, contact me via <a href="https://github.com/sircryptic" class="underline text-indigo-600 hover:text-indigo-800">GitHub</a>.</p>
+        <p>For any further questions or concerns, contact me via <a href="https://github.com/sircryptic" class="underline text-indigo-600 hover:text-indigo-800" target="_blank">GitHub</a>.</p>
 
-        <p class="text-sm text-gray-500">Last updated: May 28, 2025</p>
+        <p class="text-sm text-gray-500">Last updated: May 27, 2025</p>
       </div>
       <a href="index.html" class="inline-block btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
         Back to Home
@@ -109,10 +179,38 @@
   </main>
 
   <footer>
-    <span class="footer-text">Free Open Source IP Leak Test | Developed by sircryptic | <a href="privacy.html" class="underline">Privacy Notice</a></span>
+    <span class="footer-text">Free Open Source IP Leak Test | <a href="privacy.html" class="underline">Privacy Notice</a></span>
     <a href="https://github.com/sircryptic" target="_blank">
       <img src="https://img.icons8.com/fluency/24/github.png" alt="GitHub" />
     </a>
   </footer>
+
+  <script>
+    // Fade in content and hide overlay
+    function fadeInContent() {
+      try {
+        const mainElement = document.querySelector('main');
+        const overlayElement = document.getElementById('loading-overlay');
+        if (mainElement) mainElement.classList.add('loaded');
+        if (overlayElement) {
+          overlayElement.classList.add('hidden');
+          setTimeout(() => {
+            overlayElement.style.display = 'none';
+          }, 500); // Match transition duration
+        }
+      } catch (e) {}
+    }
+
+    // Start fade-in with timeout
+    try {
+      setTimeout(() => {
+        if (!document.querySelector('main').classList.contains('loaded')) {
+          fadeInContent();
+        }
+      }, 5000); // 5-second timeout
+      // Simulate load delay (e.g., 1 second) for smoother UX
+      setTimeout(fadeInContent, 1000);
+    } catch (e) {}
+  </script>
 </body>
 </html>
