@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Free open-source Free Open Source IP Leak Test to check your IP address, location, ISP, and VPN status with a responsive map." />
-  <meta name="keywords" content="IP geolocation, IP lookup, VPN detection, location tracker, privacy tool, open source" />
+  <meta name="description" content="Free open-source IP Leak Test to check your IP address (IPv4/IPv6), location, ISP, and VPN/Tor status with a responsive map." />
+  <meta name="keywords" content="IP geolocation, IP lookup, VPN detection, Tor detection, IPv6, IPv4, location tracker, privacy tool, open source" />
   <meta name="author" content="sircryptic" />
   <meta property="og:title" content="Free Open Source IP Leak Test by sircryptic" />
-  <meta property="og:description" content="Discover your IP address, location, and VPN status with this free open-source tool featuring a dynamic map." />
+  <meta property="og:description" content="Discover your IP address (IPv4/IPv6), location, and VPN/Tor status with this free open-source tool featuring a dynamic map." />
   <meta property="og:image" content="https://img.icons8.com/emoji/48/globe.png" />
   <meta property="og:url" content="https://sircryptic.github.io/ip-geolocation" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Free Open Source IP Leak Test by sircryptic" />
-  <meta name="twitter:description" content="Check your IP, location, and VPN status for free!." />
+  <meta name="twitter:description" content="Check your IP (IPv4/IPv6), location, and VPN/Tor status for free!" />
   <meta name="twitter:image" content="https://img.icons8.com/emoji/48/globe.png" />
   <title>My IP Information</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
@@ -120,8 +120,9 @@
       </h1>
 
       <div id="ip-info" class="space-y-2 text-base sm:text-lg leading-relaxed">
-        <p><strong>IP Address:</strong> <span id="ip"><span class="spinner"></span> Loading...</span></p>
-        <p id="tor-vpn" class="text-yellow-600 hidden"><strong>⚠️ Privacy:</strong> <span id="vpn-provider">VPN/Tor</span> detected (IP reflects VPN server)</p>
+        <p><strong>IPv4 Address:</strong> <span id="ipv4"><span class="spinner"></span> Loading...</span></p>
+        <p><strong>IPv6 Address:</strong> <span id="ipv6"><span class="spinner"></span> Loading...</span></p>
+        <p id="tor-vpn" class="text-yellow-600 hidden"><strong>⚠️ Privacy:</strong> <span id="vpn-provider">VPN/Tor</span> detected (IP reflects VPN/Tor server)</p>
         <p><strong>User Agent:</strong> <span id="user-agent">Loading...</span></p>
         <h2 class="text-lg sm:text-xl font-semibold text-indigo-600 mt-4">📋 My IP Information</h2>
         <p><strong>ISP:</strong> <span id="isp"><span class="spinner"></span> Loading...</span></p>
@@ -134,7 +135,7 @@
         </p>
         <p><strong>Timezone:</strong> <span id="timezone"><span class="spinner"></span> Loading...</span></p>
         <p><strong>Coordinates:</strong> <span id="coordinates"><span class="spinner"></span> Loading...</span></p>
-        <p id="vpn-note" class="vpn-note hidden">Note: Using a VPN may mask your real IP and location. Allow browser geolocation to see your actual position on the map. Try disabling your VPN to confirm your real IP.</p>
+        <p id="vpn-note" class="vpn-note hidden">Note: Using a VPN/Tor may mask your real IP and location. Allow browser geolocation to see your actual position on the map. Try disabling your VPN/Tor to confirm your real IP.</p>
         <p id="error" class="error hidden"></p>
       </div>
 
@@ -142,13 +143,13 @@
         <button id="locate" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" title="Refresh your real location using browser geolocation">
           📍 Refresh Real Location
         </button>
-        <button id="toggle-map" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" title="Toggle between VPN and real location views" disabled>
+        <button id="toggle-map" class="btn-primary px-5 py-2 text-white rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" title="Toggle between VPN/Tor and real location views" disabled>
           Toggle Map View
         </button>
       </div>
 
       <div id="map"></div>
-      <p class="map-note">Blue marker: IP-based location (may reflect VPN). Green marker: Your real location (requires geolocation).</p>
+      <p class="map-note">Blue marker: IP-based location (may reflect VPN/Tor). Green marker: Your real location (requires geolocation).</p>
     </div>
   </main>
 
@@ -191,27 +192,49 @@
     const vpnProviders = [
       'proton', 'nordvpn', 'expressvpn', 'surfshark', 'cyberghost', 'pia', 'private internet access',
       'mullvad', 'windscribe', 'purevpn', 'ipvanish', 'tor', 'hide my ass', 'hola', 'zenmate',
-      'vyprvpn', 'tunnelbear', 'fastestvpn', 'astrill', 'avg vpn', 'avast', 'betternet', 'hotspot shield',
-      'privatevpn', 'strongvpn', 'torguard', 'atlas vpn', 'privado', 'ivpn', 'ovpn', 'datacamp'
+      'vyprvpn', 'tunnelbear', 'pass', 'astrill', 'avg vpn', 'avast', 'datacamp', 'hotspot shield',
+      'anonymous', 'privado', 'private', 'strongvpn', 'privatevpn', 'torguard', 'atlas vpn', 'ovpn', 'vpn'
     ];
 
     // Validate country code (ISO 3166-1 alpha-2)
     const validCountryCodes = [
-      'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd',
-      'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw', 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv',
-      'kh', 'cm', 'ca', 'ky', 'cf', 'td', 'cl', 'cn', 'cx', 'cc', 'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr',
-      'cu', 'cw', 'cy', 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 'fo',
-      'fj', 'fi', 'fr', 'gf', 'pf', 'tf', 'ga', 'gm', 'ge', 'de', 'gh', 'gi', 'gr', 'gl', 'gd', 'gp', 'gu', 'gt',
-      'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'hk', 'hu', 'is', 'in', 'id', 'ir', 'iq', 'ie', 'im', 'il', 'it', 'jm',
-      'jp', 'je', 'jo', 'kz', 'ke', 'ki', 'kp', 'kr', 'kw', 'kg', 'la', 'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt',
-      'lu', 'mo', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mq', 'mr', 'mu', 'yt', 'mx', 'fm', 'md', 'mc', 'mn',
-      'me', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nc', 'nz', 'ni', 'ne', 'ng', 'nu', 'nf', 'mp', 'no',
-      'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 'pe', 'ph', 'pn', 'pl', 'pt', 'pr', 'qa', 're', 'ro', 'ru', 'rw',
-      'bl', 'sh', 'kn', 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sx', 'sk',
-      'si', 'sb', 'so', 'za', 'ss', 'es', 'lk', 'sd', 'sr', 'sj', 'se', 'ch', 'sy', 'tw', 'tj', 'tz', 'th', 'tl',
-      'tg', 'tk', 'to', 'tt', 'tn', 'tr', 'tm', 'tc', 'tv', 'ug', 'ua', 'ae', 'gb', 'us', 'um', 'uy', 'uz', 'vu',
-      've', 'vn', 'vg', 'vi', 'wf', 'eh', 'ye', 'zm', 'zw'
+      'af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'aq', 'ag', 'ar', 'am', 'aw', 'au', 'at', 'az', 'bs', 'bh', 'bd', 'at', 'bb', 'by', 'be', 'bz', 'bj', 'bm', 'bt', 'bo', 'bq', 'ba', 'bw',
+ 'br', 'io', 'bn', 'bg', 'bf', 'bi', 'cv', 'kh', 'cm', 'ca', 'ky', 'cf', 'td', 'cl', 
+ 'cn', 'cx', 'cc', 'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr', 'cu', 'cw', 'cy', 
+ 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 
+ 'fo', 'fj', 'fi', 'fr', 'gf', 'pf', 'tf', 'ga', 'gm', 'ge', 'de', 'gh', 'gi', 'gr', 
+ 'gl', 'gd', 'gp', 'gu', 'gt', 'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'hk', 'hu', 'is', 
+ 'in', 'id', 'ir', 'iq', 'ie', 'im', 'il', 'it', 'jm', 'jp', 'je', 'jo', 'kz', 'ke', 
+ 'ki', 'kp', 'kr', 'kw', 'kg', 'la', 'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt', 'lu', 
+ 'mo', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mq', 'mr', 'mu', 'yt', 'mx', 'fm', 
+ 'md', 'mc', 'mn', 'me', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nc', 'nz', 
+ 'ni', 'ne', 'ng', 'nu', 'nf', 'mp', 'no', 'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 
+ 'pe', 'ph', 'pn', 'pl', 'pt', 'pr', 'qa', 're', 'ro', 'ru', 'rw', 'bl', 'sh', 'kn', 
+ 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sx', 
+ 'sk', 'si', 'sb', 'so', 'za', 'ss', 'es', 'lk', 'sd', 'sr', 'sj', 'se', 'ch', 'sy', 
+ 'tw', 'tj', 'tz', 'th', 'tl', 'tg', 'tk', 'to', 'tt', 'tn', 'tr', 'tm', 'tc', 'tv', 
+ 'ug', 'ua', 'ae', 'gb', 'us', 'um', 'uy', 'uz', 'vu', 've', 'vn', 'vg', 'vi', 'wf', 
+ 'eh', 'ye', 'zm', 'zw'
     ];
+
+    // IP conversion functions
+    function ipv4ToIpv6(ipv4) {
+      if (!ipv4 || !/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(ipv4)) return null;
+      const parts = ipv4.split('.').map(n => parseInt(n));
+      const hex = parts.map(n => n.toString(16).padStart(2, '0')).join('');
+      return `::ffff:${hex.slice(0, 4)}:${hex.slice(4)}`;
+    }
+
+    function ipv6ToIpv4(ipv6) {
+      if (!ipv6 || !ipv6.startsWith('::ffff:')) return null;
+      const hex = ipv6.replace('::ffff:', '').replace(/:/g, '');
+      if (hex.length !== 8) return null;
+      const parts = [];
+      for (let i = 0; i < 8; i += 2) {
+        parts.push(parseInt(hex.slice(i, i + 2), 16));
+      }
+      return parts.join('.');
+    }
 
     // Fetch IP information with retry and fallback
     async function fetchIPInfo(attempt = 1, maxAttempts = 4, usePrimaryAPI = true) {
@@ -240,12 +263,30 @@
           hosting: data.isp?.toLowerCase().includes('hosting') || data.org?.toLowerCase().includes('hosting') || false
         };
 
+        // Fetch IPv6 separately if needed
+        let ipv6 = null;
+        try {
+          const ipifyResponse = await fetch('https://api64.ipify.org?format=json');
+          const ipifyData = await ipifyResponse.json();
+          if (ipifyData.ip.includes(':')) ipv6 = ipifyData.ip;
+        } catch (e) {
+          console.warn('Failed to fetch IPv6:', e);
+        }
+
         // Update DOM with IP info
         const updateField = (id, value) => {
           const element = document.getElementById(id);
           if (element) element.innerHTML = value || 'Unknown';
         };
-        updateField('ip', normalizedData.ip);
+
+        // Handle IPv4 and IPv6
+        const isIPv6 = normalizedData.ip.includes(':');
+        const ipv4 = isIPv6 ? ipv6ToIpv4(normalizedData.ip) : normalizedData.ip;
+        const ipv6Converted = isIPv6 ? normalizedData.ip : ipv4ToIpv6(normalizedData.ip);
+        const ipv6Final = ipv6 || ipv6Converted || 'Not available';
+        updateField('ipv4', ipv4 ? `${ipv4}${ipv6Converted ? ` (IPv6: ${ipv6Converted})` : ''}` : 'Not available');
+        updateField('ipv6', ipv6Final !== 'Not available' ? `${ipv6Final}${ipv4 ? ` (IPv4: ${ipv4})` : ''}` : 'Not available');
+
         updateField('isp', normalizedData.org);
         updateField('city', normalizedData.city);
         updateField('region', normalizedData.region);
@@ -267,21 +308,26 @@
           flagImg.classList.remove('hidden');
         }
 
-        // VPN/Tor detection
+        // Tor and VPN detection
         const orgLower = normalizedData.org?.toLowerCase() || '';
+        const isTorUserAgent = /TorBrowser|Tor\/[\d.]+/.test(userAgent);
         const detectedProvider = vpnProviders.find(provider => orgLower.includes(provider));
+        const isTor = isTorUserAgent || orgLower.includes('tor') || detectedProvider === 'tor';
         const vpnIndicators = [
           normalizedData.proxy,
           normalizedData.hosting,
           detectedProvider,
-          orgLower.includes('vpn')
+          orgLower.includes('vpn'),
+          isTor
         ].filter(Boolean).length;
         const isVPN = vpnIndicators >= 1;
-        console.log('VPN Detection Details:', {
+        console.log('VPN/Tor Detection Details:', {
           proxy: normalizedData.proxy,
           hosting: normalizedData.hosting,
           org: normalizedData.org,
           detectedProvider,
+          isTorUserAgent,
+          isTor,
           vpnIndicators,
           isVPN
         });
@@ -291,7 +337,7 @@
         if (isVPN) {
           torVpnElement.classList.remove('hidden');
           vpnNoteElement.classList.remove('hidden');
-          vpnProviderElement.textContent = detectedProvider ? `${detectedProvider.charAt(0).toUpperCase() + detectedProvider.slice(1)}` : 'Possible VPN/Tor';
+          vpnProviderElement.textContent = isTor ? 'Tor' : (detectedProvider ? `${detectedProvider.charAt(0).toUpperCase() + detectedProvider.slice(1)}` : 'Possible VPN/Tor');
         } else {
           torVpnElement.innerHTML = '<strong>✅ No VPN/Tor detected</strong>';
           torVpnElement.classList.remove('hidden');
@@ -307,7 +353,7 @@
             iconSize: [25, 41], 
             iconAnchor: [12, 41] 
           }) 
-        }).addTo(map).bindTooltip("VPN Location");
+        }).addTo(map).bindTooltip("VPN/Tor Location");
         map.setView([defaultLat, defaultLon], 13);
       } catch (error) {
         console.error('Fetch error:', error);
@@ -323,7 +369,7 @@
             errorElement.textContent = `Failed to fetch IP information after ${maxAttempts} attempts. Please check your connection or try again later.`;
             errorElement.classList.remove('hidden');
           }
-          ['ip', 'isp', 'city', 'region', 'zip', 'country', 'timezone', 'coordinates'].forEach(id => {
+          ['ipv4', 'ipv6', 'isp', 'city', 'region', 'zip', 'country', 'timezone', 'coordinates'].forEach(id => {
             const element = document.getElementById(id);
             if (element) element.innerHTML = 'Unknown';
           });
@@ -366,7 +412,7 @@
           }).addTo(map).bindTooltip("Real Location").openPopup();
           map.setView([realLat, realLon], 13);
           toggleButton.disabled = false;
-          toggleButton.title = 'Toggle between VPN and real location views';
+          toggleButton.title = 'Toggle between VPN/Tor and real location views';
         },
         err => {
           console.warn("Geolocation error: " + err.message);
@@ -396,7 +442,7 @@
             }).addTo(map).bindTooltip("Real Location").openPopup();
             map.setView([realLat, realLon], 13);
             toggleButton.disabled = false;
-            toggleButton.title = 'Toggle between VPN and real location views';
+            toggleButton.title = 'Toggle between VPN/Tor and real location views';
             locateButton.disabled = false;
             locateButton.innerHTML = '📍 Refresh Real Location';
           },
@@ -415,7 +461,6 @@
       }
     });
 
-    // Toggle map view between VPN and real location
     let showingRealLocation = false;
     toggleButton.addEventListener('click', () => {
       if (!realLat || !realLon) {
@@ -433,7 +478,7 @@
         map.setView([realLat, realLon], 13);
         if (realMarker) realMarker.openPopup();
         showingRealLocation = true;
-        toggleButton.textContent = 'Toggle to VPN Location';
+        toggleButton.textContent = 'Toggle to VPN/Tor Location';
       }
     });
   </script>
